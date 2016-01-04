@@ -3,10 +3,16 @@ console.log("hello console");
 var Game = {
   init: function () {
     console.log("WSRL Live Initialization");
-    Game.DISPLAYS.main.o = new ROT.Display(Game.DISPLAYS.main);
+    this.DISPLAYS.main.o = new ROT.Display(this.DISPLAYS.main);
+    this.renderMain();
   },
   getDisplay: function (displayName) {
-    return Game.DISPLAYS[displayName].o;
+    return this.DISPLAYS[displayName].o;
+  },
+  renderMain: function () {
+    for (var i = 0; i < 5; i++) {
+      this.DISPLAYS.main.o.drawText(2,3+i, "TADA!!!");
+    }
   },
   DISPLAYS: {
     main: {
