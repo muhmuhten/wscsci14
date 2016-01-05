@@ -1,3 +1,15 @@
-#wsrl-main-display {
-  border: 1px solid red;
+.wsrl-display {
+  /* border: 1px solid red; */
+  float: left;
+  line-height: 0;
+}
+
+#wsrl-display-avatar {
+}
+
+#wsrl-display-main {
+}
+
+#wsrl-display-message {
+  clear: both;
 }
