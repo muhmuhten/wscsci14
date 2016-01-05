@@ -23,10 +23,12 @@
           display.drawText(1,3, "press any key to play",
               DEFAULTS.FG, DEFAULTS.BG);
         },
+        message: function (display) {
+          Game.Message.render(display);
+        }
       },
       handleInput: function (ty, ev) {
-        console.log("gameStart event, type=" + ty);
-        console.dir(ev);
+        Game.Message.send("gameStart event, type=" + ty);
       },
     },
   };

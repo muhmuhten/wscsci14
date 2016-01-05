@@ -36,6 +36,7 @@
     handleEvent: function (ty, ev) {
       if (this._uiMode == null) return;
       this._uiMode.handleInput(ty, ev);
+      this.renderAll();
     },
 
     switchUIMode: function (mode) {
