@@ -34,12 +34,20 @@
     },
 
     handleEvent: function (ty, ev) {
-      if (this._uiMode == null) return;
+      if (this._uiMode == null || this._uiMode.handleInput == null) return;
       this._uiMode.handleInput(ty, ev);
       this.renderAll();
     },
 
-    switchUIMode: function (mode) {
+    switchMode: function (key) {
+      var mode = Game.UIMode[key];
+      if (mode == null) {
+        Game.Message.send("%c{red}Switched to bad mode '" + key + "'");
+      }
+      this._switchMode(mode);
+    },
+
+    _switchMode: function (mode) {
       if (this._uiMode != null) this._uiMode.exit();
       this._uiMode = mode;
       if (this._uiMode != null) this._uiMode.enter();
@@ -61,6 +69,7 @@
       message: {
         frame: { width: 100, height: 6 },
         defaultRender: function (disp) {
+          Game.Message.render(disp);
         },
       },
     },
@@ -90,6 +99,6 @@
       });
     });
 
-    Game.switchUIMode(Game.UIMode.gameStart);
+    Game.switchMode("start");
   };
 })();

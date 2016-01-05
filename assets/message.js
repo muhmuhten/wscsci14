@@ -7,7 +7,7 @@
     _que: [],
 
     clear: function () {
-      this._que = []
+      this._que = [];
       this._qix = 0;
     },
 
