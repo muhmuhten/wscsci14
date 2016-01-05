@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var Game = {
+  window.Game = {
     init: function () {
       console.log("WSRL Live Initialization");
 
@@ -13,42 +13,53 @@
     },
 
     eachDisplay: function (f) {
-      for (var key in this.DISPLAYS) {
-        if (this.DISPLAYS.hasOwnProperty(key)) {
-          f(key, this.DISPLAYS[key]);
+      for (var key in this._displays) {
+        if (this._displays.hasOwnProperty(key)) {
+          f.call(self, key, this._displays[key]);
         }
       }
     },
 
     renderAll: function () {
+      var self = this;
       this.eachDisplay(function (key, disp) {
-        disp.render();
+        disp.obj.clear();
+        ((self._uiMode && self._uiMode.render && self._uiMode.render[key])
+         || disp.defaultRender)(disp.obj);
       });
     },
 
     getDisplay: function (displayName) {
-      return this.DISPLAYS[displayName].obj;
+      return this._displays[displayName].obj;
     },
 
-    DISPLAYS: {
+    handleEvent: function (ty, ev) {
+      if (this._uiMode == null) return;
+      this._uiMode.handleInput(ty, ev);
+    },
+
+    switchUIMode: function (mode) {
+      if (this._uiMode != null) this._uiMode.exit();
+      this._uiMode = mode;
+      if (this._uiMode != null) this._uiMode.enter();
+      this.renderAll();
+    },
+
+    _displays: {
       main: {
         frame: { width: 80, height: 24 },
-        render: function () {
-          for (var i = 0; i < 5; i++) {
-            this.obj.drawText(2,3+i, "main display");
-          }
+        defaultRender: function (disp) {
+          disp.drawText(2,3, "Something unexpected happened. This is bad.");
         },
       },
       avatar: {
         frame: { width: 20, height: 24 },
-        render: function () {
-          this.obj.drawText(2,3, "avatar display");
+        defaultRender: function (disp) {
         },
       },
       message: {
         frame: { width: 100, height: 6 },
-        render: function () {
-          this.obj.drawText(2,3, "message display");
+        defaultRender: function (disp) {
         },
       },
     },
@@ -56,13 +67,12 @@
 
   window.onload = function() {
     console.log("starting WSRL - window loaded");
-    // Check if rot.js can work on this browser
+
     if (!ROT.isSupported()) {
       alert("The rot.js library isn't supported by your browser.");
       return;
     }
 
-    // Initialize the game
     Game.init();
 
     ["avatar", "main", "message"].forEach(function (key) {
@@ -73,7 +83,12 @@
       document.body.appendChild(div);
     });
 
-    // Add the containers to our HTML page
-    document.getElementById('wsrl-display-main').appendChild(Game.getDisplay('main').getContainer());
+    ["keydown", "keypress", "keyup"].forEach(function (ty) {
+      window.addEventListener(ty, function (ev) {
+        Game.handleEvent(ty, ev);
+      });
+    });
+
+    Game.switchUIMode(Game.UIMode.gameStart);
   };
 })();
