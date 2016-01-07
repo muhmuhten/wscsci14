@@ -43,15 +43,15 @@
         var last = this._lastInvalid;
         this._lastInvalid = null;
 
-        if (ev.code == "KeyN") {
+        if (ev.code === "KeyN") {
           Game.switchMode("newGame");
           return;
         }
-        if (ev.code == "KeyL") {
+        if (ev.code === "KeyL") {
           Game.switchMode("load");
           return;
         }
-        if (ev.code == "KeyS") {
+        if (ev.code === "KeyS") {
           Game.switchMode("save");
           return;
         }
@@ -120,15 +120,22 @@
           writeTo(d, 1,1, "Game play:");
           writeTo(d, 3,3, "Press [RET] to win.");
           writeTo(d, 3,4, "Press [ESC] to lose.");
+          writeTo(d, 3,4, "Press [S] to access the persistence menu.");
         },
       },
       handleInput: function (ty, ev) {
         Game.Message.send("You pressed: " + String.fromCharCode(ev.charCode));
-        if (ty === "keypress" && ev.code === "Enter") {
+
+        if (ev.code === "Enter") {
           Game.switchMode("win");
+          return;
         }
-        else if (ty == "keydown" && ev.keyCode == 27) {
+        if (ev.code === "Escape") {
           Game.switchMode("lose");
+          return;
+        }
+        if (ev.code === "KeyS") {
+          Game.switchMode("menu");
         }
       }
     },

@@ -93,7 +93,7 @@
       document.body.appendChild(div);
     });
 
-    ["keydown", "keypress", "keyup"].forEach(function (ty) {
+    ["keydown"].forEach(function (ty) {
       window.addEventListener(ty, function (ev) {
         Game.handleEvent(ty, ev);
       });
