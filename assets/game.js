@@ -99,6 +99,6 @@
       });
     });
 
-    Game.switchMode("start");
+    Game.switchMode("menu");
   };
 })();

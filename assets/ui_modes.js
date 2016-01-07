@@ -6,6 +6,7 @@
     BG: '#000',
   };
 
+  function noOp() {}
   function writeTo(d, x,y, msg, fg, bg) {
     return d.drawText(x,y, msg, fg || DEFAULTS.FG, bg || DEFAULTS.bg);
   }
@@ -13,23 +14,58 @@
   Game.UIMode = {
     DEFAULTS: DEFAULTS,
 
-    start: {
+    menu: {
       enter: function () {
-        console.log("start enter");
+        console.log("menu enter");
       },
       exit: function () {
-        console.log("start exit");
+        console.log("menu exit");
       },
       render: {
         main: function (d) {
-          writeTo(d, 1,1, "game start");
-          writeTo(d, 1,3, "press any key to play");
+          writeTo(d, 1,1, "Press:")
+          writeTo(d, 3,3, "[N] Start a new game");
+          writeTo(d, 3,4, "[L] Load the saved game");
+          writeTo(d, 3,5, "[S] Save the current game");
         },
       },
       handleInput: function (ty, ev) {
-        if (ev.charCode === 0) return;
+        var last = this._lastInvalid;
+        this._lastInvalid = null;
+
+        if (ev.code == "KeyN") {
+          Game.switchMode("play");
+          return;
+        }
+        if (ev.code == "KeyL") {
+          Game.switchMode("load");
+          return;
+        }
+        if (ev.code == "KeyS") {
+          Game.switchMode("save");
+          return;
+        }
+
+        if (ev.code !== last) {
+          this._lastInvalid = ev.code;
+          Game.Message.send("Invalid choice: " + ev.code);
+        }
+      },
+    },
+
+    load: {
+      enter: function () {
         Game.switchMode("play");
       },
+      exit: noOp,
+      handleInput: noOp,
+    },
+    save: {
+      enter: function () {
+        Game.switchMode("play");
+      },
+      exit: noOp,
+      handleInput: noOp,
     },
 
     play: {
