@@ -62,6 +62,8 @@
     },
     load: {
       enter: function () {
+        var state = JSON.parse('{"rng":[1,2,3,4]}');
+        ROT.RNG.setState(state.rng);
         Game.switchMode("play");
       },
       exit: noOp,
