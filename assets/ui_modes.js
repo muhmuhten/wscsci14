@@ -34,7 +34,7 @@
         this._lastInvalid = null;
 
         if (ev.code == "KeyN") {
-          Game.switchMode("play");
+          Game.switchMode("newgame");
           return;
         }
         if (ev.code == "KeyL") {
@@ -53,6 +53,13 @@
       },
     },
 
+    newgame: {
+      enter: function () {
+        Game.switchMode("play");
+      },
+      exit: noOp,
+      handleInput: noOp,
+    },
     load: {
       enter: function () {
         Game.switchMode("play");
@@ -62,6 +69,10 @@
     },
     save: {
       enter: function () {
+        var state = {
+          rng: ROT.RNG.getState(),
+        };
+        console.log(JSON.stringify(state));
         Game.switchMode("play");
       },
       exit: noOp,
