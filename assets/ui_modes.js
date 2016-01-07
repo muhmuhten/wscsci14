@@ -4,7 +4,14 @@
   var DEFAULTS = {
     FG: '#fff',
     BG: '#000',
+    STORE_KEY: "6b8b78f9bf0bec2540201010245841c71cd7c1b5297bf2a051fb0373"
   };
+
+  function checkLocalStorage() {
+    if (window.localStorage) return true;
+    Game.Message.send("%c{yellow}Local storage not available.");
+    return false;
+  }
 
   function noOp() {}
   function writeTo(d, x,y, msg, fg, bg) {
@@ -23,10 +30,13 @@
       },
       render: {
         main: function (d) {
-          writeTo(d, 1,1, "Press:")
+          writeTo(d, 1,1, "Press:");
           writeTo(d, 3,3, "[N] Start a new game");
-          writeTo(d, 3,4, "[L] Load the saved game");
-          writeTo(d, 3,5, "[S] Save the current game");
+
+          if (checkLocalStorage()) {
+            writeTo(d, 3,4, "[L] Load the saved game");
+            writeTo(d, 3,5, "[S] Save the current game");
+          }
         },
       },
       handleInput: function (ty, ev) {
@@ -34,7 +44,7 @@
         this._lastInvalid = null;
 
         if (ev.code == "KeyN") {
-          Game.switchMode("newgame");
+          Game.switchMode("newGame");
           return;
         }
         if (ev.code == "KeyL") {
@@ -53,7 +63,7 @@
       },
     },
 
-    newgame: {
+    newGame: {
       enter: function () {
         Game.switchMode("play");
       },
@@ -62,7 +72,19 @@
     },
     load: {
       enter: function () {
-        var state = JSON.parse('{"rng":[1,2,3,4]}');
+        if (!checkLocalStorage()) {
+          Game.switchMode("newGame");
+          return;
+        }
+
+        var store = localStorage.getItem(DEFAULTS.STORE_KEY);
+        if (store == null) {
+          Game.Message.send("%c{yellow}No saved game found.");
+          Game.switchMode("newGame");
+          return;
+        }
+
+        var state = JSON.parse(store);
         ROT.RNG.setState(state.rng);
         Game.switchMode("play");
       },
@@ -71,10 +93,15 @@
     },
     save: {
       enter: function () {
+        if (!checkLocalStorage()) {
+          Game.switchMode("play");
+          return;
+        }
+
         var state = {
           rng: ROT.RNG.getState(),
         };
-        console.log(JSON.stringify(state));
+        localStorage.setItem(DEFAULTS.STORE_KEY, JSON.stringify(state));
         Game.switchMode("play");
       },
       exit: noOp,
