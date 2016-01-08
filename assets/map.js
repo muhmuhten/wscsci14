@@ -2,7 +2,7 @@ Game.Map = (function () {
   "use strict";
 
   function Map(attr) {
-    if (this.attr == null) this.attr = {};
+    this.attr = this.attr || {};
     this.attr.tiles = attr.tiles;
     this.width = attr.tiles.length;
     this.height = attr.tiles[0].length;

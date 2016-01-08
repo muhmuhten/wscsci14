@@ -2,7 +2,6 @@ Game.Symbol = (function () {
   "use strict";
 
   function Symbol(attr) {
-    if (this.attr == null) this.attr = {};
     this.chr = attr.chr || '*';
     this.fg = attr.fg || Game.UIMode.DEFAULTS.FG;
     this.bg = attr.bg || Game.UIMode.DEFAULTS.BG;

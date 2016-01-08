@@ -3,7 +3,6 @@ Game.Tile = (function () {
 
   function Tile(attr) {
     Game.Symbol.call(this, attr);
-    if (this.attr == null) this.attr = {};
     this.id = attr.id;
   }
   Tile.extend(Game.Symbol);
