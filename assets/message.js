@@ -1,7 +1,7 @@
-(function (Game) {
+Game.Message = (function () {
   "use strict";
 
-  Game.Message = {
+  return {
     QUEUE_SIZE: Game._displays.message.frame.height, // XXX
     _qix: 0,
     _que: [],
@@ -25,4 +25,4 @@
       }
     }
   };
-})(window.Game)
+})();

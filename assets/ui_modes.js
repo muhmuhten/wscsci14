@@ -1,4 +1,4 @@
-(function (Game) {
+Game.UIMode = (function () {
   "use strict";
 
   var DEFAULTS = {
@@ -18,7 +18,7 @@
     return d.drawText(x,y, msg, fg || DEFAULTS.FG, bg || DEFAULTS.bg);
   }
 
-  Game.UIMode = {
+  return {
     DEFAULTS: DEFAULTS,
 
     menu: {
@@ -168,4 +168,4 @@
       }
     },
   };
-})(window.Game)
+})();
