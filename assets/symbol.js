@@ -3,19 +3,19 @@ Game.Symbol = (function () {
 
   function Symbol(attr) {
     if (this.attr == null) this.attr = {};
-    this.attr.chr = attr.chr || '*';
-    this.attr.fg = attr.fg || Game.UIMode.DEFAULTS.FG;
-    this.attr.bg = attr.bg || Game.UIMode.DEFAULTS.BG;
+    this.chr = attr.chr || '*';
+    this.fg = attr.fg || Game.UIMode.DEFAULTS.FG;
+    this.bg = attr.bg || Game.UIMode.DEFAULTS.BG;
   }
 
   Symbol.prototype.getChr = function () {
-    return this.attr.chr;
+    return this.chr;
   }
   Symbol.prototype.getFg = function () {
-    return this.attr.fg;
+    return this.fg;
   }
   Symbol.prototype.getBg = function () {
-    return this.attr.bg;
+    return this.bg;
   }
 
   Symbol.prototype.render = function (d, x,y) {

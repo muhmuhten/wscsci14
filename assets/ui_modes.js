@@ -65,9 +65,6 @@ Game.UIMode = (function () {
 
     newGame: {
       enter: function () {
-        // XXX this is a weird place to put state
-        Game._state = {};
-
         var tiles = [];
         var gener = new ROT.Map.Cellular(80, 24);
         gener.randomize(0.5);
@@ -80,14 +77,17 @@ Game.UIMode = (function () {
           if (tiles[x] == null) tiles[x] = [];
 
           if (v === 0) {
-            tiles[x][y] = Game.Tile.empty;
+            tiles[x][y] = "wall";
           }
           else {
-            tiles[x][y] = Game.Tile.floor;
+            tiles[x][y] = "floor";
           }
         });
 
-        Game._state.map = new Game.Map({tiles: tiles});
+        // XXX this is a weird place to put state
+        Game._state = {
+          map: new Game.Map({tiles: tiles}),
+        };
 
         Game.switchMode("play");
       },
@@ -109,6 +109,9 @@ Game.UIMode = (function () {
         }
 
         var state = JSON.parse(store);
+        Game._state = {
+          map: new Game.Map(state.map),
+        }
         ROT.RNG.setState(state.rng);
         Game.switchMode("play");
       },
@@ -124,6 +127,7 @@ Game.UIMode = (function () {
 
         var state = {
           rng: ROT.RNG.getState(),
+          map: Game._state.map.attr,
         };
         localStorage.setItem(DEFAULTS.STORE_KEY, JSON.stringify(state));
         Game.switchMode("play");

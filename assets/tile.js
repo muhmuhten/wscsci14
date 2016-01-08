@@ -4,12 +4,31 @@ Game.Tile = (function () {
   function Tile(attr) {
     Game.Symbol.call(this, attr);
     if (this.attr == null) this.attr = {};
+    this.id = attr.id;
   }
   Tile.extend(Game.Symbol);
 
-  Tile.empty = new Tile({name: "empty", chr: ' '});
-  Tile.floor = new Tile({name: "floor", chr: '.'});
-  Tile.wall = new Tile({name: "wall", chr: '#'});
+  Tile.prototype.getId = function () {
+    return this.id;
+  };
+
+  Tile.db = {};
+  Tile.register = function (t) {
+    this.db[t.getId()] = t;
+  };
+
+  Tile.register(new Tile({
+    id: "empty",
+    chr: ' '
+  }));
+  Tile.register(new Tile({
+    id: "floor",
+    chr: '.'
+  }));
+  Tile.register(new Tile({
+    id: "wall",
+    chr: '#'
+  }));
 
   return Tile;
 })();
