@@ -16,7 +16,15 @@ Game.Map = (function () {
   };
 
   Map.prototype.getTile = function (x,y) {
-    return this.attr.tiles[x][y] || Game.Tiles.empty;
+    return this.attr.tiles[x][y] || Game.Tile.empty;
+  };
+
+  Map.prototype.render = function (disp) {
+    for (var x = this.getWidth()-1; x >= 0; x--) {
+      for (var y = this.getWidth()-1; y >= 0; y--) {
+        this.getTile(x,y).render(disp, x,y);
+      }
+    }
   };
 
   return Map;

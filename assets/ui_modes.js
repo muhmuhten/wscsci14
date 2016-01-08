@@ -65,6 +65,30 @@ Game.UIMode = (function () {
 
     newGame: {
       enter: function () {
+        // XXX this is a weird place to put state
+        Game._state = {};
+
+        var tiles = [];
+        var gener = new ROT.Map.Cellular(80, 24);
+        gener.randomize(0.5);
+
+        for (var i = 3; i >= 0; i--) {
+          gener.create();
+        }
+
+        gener.create(function (x,y,v) {
+          if (tiles[x] == null) tiles[x] = [];
+
+          if (v === 0) {
+            tiles[x][y] = Game.Tile.empty;
+          }
+          else {
+            tiles[x][y] = Game.Tile.floor;
+          }
+        });
+
+        Game._state.map = new Game.Map({tiles: tiles});
+
         Game.switchMode("play");
       },
       exit: noOp,
@@ -117,6 +141,7 @@ Game.UIMode = (function () {
       },
       render: {
         main: function (d) {
+          Game._state.map.render(d);
           writeTo(d, 1,1, "Game play:");
           writeTo(d, 3,3, "Press [RET] to win.");
           writeTo(d, 3,4, "Press [ESC] to lose.");
