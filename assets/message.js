@@ -7,23 +7,43 @@ Game.Message = (function () {
     NEW_COLORS: "%c{#ff0}",
 
     _queue: [],
-    _fresh: 0,
 
     clear: function () {
       this._queue = [];
     },
 
     send: function (msg, colors) {
-      this._queue.unshift([colors || this.NEW_COLORS, msg]);
-      delete this._queue[this.QUEUE_SIZE]; // size limit
+      colors = colors || this.NEW_COLORS;
+
+      if (this._queue[0] && msg === this._queue[0][1]) {
+        if (this._queue[0][2] == null) {
+          this._queue[0].push(" (x", 1, ")");
+        }
+
+        this._queue[0][3]++;
+        this._queue[0][0] = colors;
+      }
+      else {
+        this._queue.unshift([colors, msg]);
+      }
+
+      while (this._queue.length > this.QUEUE_SIZE) {
+        this._queue.pop();
+      }
+    },
+
+    decay: function (n) {
+      for (var i = n || 0; i < this._queue.length; i++) {
+        this._queue[i][0] = this.OLD_COLORS;
+      }
     },
 
     render: function (disp) {
-      var i = disp.getOptions().height;
-      for (i--; i >= 0; i--) {
+      var max = disp.getOptions().height - 1;
+      for (var i = max; i >= 0; i--) {
         var msg = this._queue[i];
         if (!msg) continue;
-        disp.drawText(1,i, this._queue[i].join(""));
+        disp.drawText(1,max-i, this._queue[i].join(""));
       }
     }
   };

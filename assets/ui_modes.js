@@ -144,6 +144,7 @@ Game.UIMode = (function () {
         },
       },
       handleInput: function (ty, ev) {
+        Game.Message.decay();
         Game.Message.send("You pressed: " + ev.code);
 
         if (ev.code === "Enter") {
