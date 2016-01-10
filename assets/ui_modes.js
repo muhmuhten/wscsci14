@@ -57,7 +57,7 @@ Game.UIMode = (function () {
     newGame: {
       enter: function () {
         var tiles = [];
-        var gener = new ROT.Map.Cellular(80, 24);
+        var gener = new ROT.Map.Cellular(800, 240);
         gener.randomize(0.5);
 
         for (var i = 3; i >= 0; i--) {
