@@ -15,6 +15,21 @@ Game.UIMode = (function () {
     }
   }
 
+  function keybindHandler(ty, ev) {
+    Game.Message.decay();
+
+    var bound = this.keys[ev.code];
+    if (bound == null) {
+      Game.Message.send("You pressed: " + ev.code);
+    }
+    else if (typeof bound === "string") {
+      Game.switchMode(bound);
+    }
+    else { // assume function, can expand
+      bound(ty, ev);
+    }
+  }
+
   var UIMode = {
     STORE_KEY: "6b8b78f9bf0bec2540201010245841c71cd7c1b5297bf2a051fb0373",
 
@@ -36,27 +51,11 @@ Game.UIMode = (function () {
           }
         },
       },
-      handleInput: function (ty, ev) {
-        var last = this._lastInvalid;
-        this._lastInvalid = null;
-
-        if (ev.code === "KeyN") {
-          Game.switchMode("newGame");
-          return;
-        }
-        if (ev.code === "KeyL") {
-          Game.switchMode("load");
-          return;
-        }
-        if (ev.code === "KeyS") {
-          Game.switchMode("save");
-          return;
-        }
-
-        if (ev.code !== last) {
-          this._lastInvalid = ev.code;
-          Game.Message.send("Invalid choice: " + ev.code);
-        }
+      handleInput: keybindHandler,
+      keys: {
+        KeyN: "newGame",
+        KeyL: "load",
+        KeyS: "save",
       },
     },
 
@@ -147,20 +146,7 @@ Game.UIMode = (function () {
           d.drawText(3,5, "Press [S] to access the persistence menu.");
         },
       },
-      handleInput: function (ty, ev) {
-        Game.Message.decay();
-
-        var bound = this.keys[ev.code];
-        if (bound == null) {
-          Game.Message.send("You pressed: " + ev.code);
-        }
-        else if (typeof bound === "string") {
-          Game.switchMode(bound);
-        }
-        else { // assume function, can expand
-          bound(ty, ev);
-        }
-      },
+      handleInput: keybindHandler,
       keys: {
         Enter: "win",
         Escape: "lose",
