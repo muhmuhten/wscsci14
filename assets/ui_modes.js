@@ -165,6 +165,7 @@ Game.UIMode = (function () {
         Enter: "win",
         Escape: "lose",
         KeyS: "menu",
+
         Digit1: mapMover(-1,1),
         Digit2: mapMover(0,1),
         Digit3: mapMover(1,1),
@@ -174,6 +175,15 @@ Game.UIMode = (function () {
         Digit7: mapMover(-1,-1),
         Digit8: mapMover(0,-1),
         Digit9: mapMover(1,-1),
+
+        KeyH: mapMover(-1,0),
+        KeyJ: mapMover(0,1),
+        KeyK: mapMover(0,-1),
+        KeyL: mapMover(1,0),
+        KeyY: mapMover(-1,-1),
+        KeyU: mapMover(1,-1),
+        KeyB: mapMover(-1,1),
+        KeyN: mapMover(1,1),
       },
     },
 
