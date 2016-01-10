@@ -42,6 +42,10 @@ Game.Map = (function () {
         this.getTile(xoff+x, yoff+y).render(disp, x,y);
       }
     }
+
+    Game.state.entities.each(function (ent) {
+      ent.getModel().render(disp, ent.getX() - xoff, ent.getY() - yoff);
+    });
   };
 
   return Map;

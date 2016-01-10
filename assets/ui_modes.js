@@ -93,7 +93,7 @@ Game.UIMode = (function () {
 
         Game.state.entities.add(new Game.Entity({
           model: "avatar",
-          x: 10,
+          x: 20,
           y: 10,
         }));
 
@@ -153,6 +153,11 @@ Game.UIMode = (function () {
           d.drawText(3,3, "Press [RET] to win.");
           d.drawText(3,4, "Press [ESC] to lose.");
           d.drawText(3,5, "Press [S] to access the persistence menu.");
+        },
+        avatar: function (d) {
+          var avatar = Game.state.entities.getAvatar();
+          d.drawText(1,2, "avatar x: " + avatar.getX());
+          d.drawText(1,3, "avatar y: " + avatar.getY());
         },
       },
       handleInput: keybindHandler,
