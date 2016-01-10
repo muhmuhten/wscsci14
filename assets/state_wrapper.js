@@ -6,6 +6,7 @@ Game.StateWrapper = (function () {
       ROT.RNG.setState(attr.rng);
     }
     this.map = new Game.Map(attr.map);
+    this.entities = new Game.EntityStore(attr.entities || {});
   }
 
   State.prototype.toJSON = function () {
@@ -14,7 +15,7 @@ Game.StateWrapper = (function () {
     };
     for (var key in this) {
       if (!this.hasOwnProperty(key)) continue;
-      out[key] = this[key].attr;
+      out[key] = this[key].attr || this[key];
     }
     return out;
   }

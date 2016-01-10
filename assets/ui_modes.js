@@ -91,6 +91,12 @@ Game.UIMode = (function () {
           map: {tiles: tiles},
         });
 
+        Game.state.entities.add(new Game.Entity({
+          model: "avatar",
+          x: 10,
+          y: 10,
+        }));
+
         Game.switchMode("play");
       },
       exit: noOp,

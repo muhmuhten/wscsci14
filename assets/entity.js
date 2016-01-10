@@ -2,13 +2,11 @@ Game.Entity = (function () {
   "use strict";
 
   function Entity(attr) {
-    Game.Symbol.call(this, attr);
     this.attr = this.attr || {};
     this.attr.model = attr.model || "nobody";
     this.attr.x = attr.x || 0;
     this.attr.y = attr.y || 0;
   }
-  Entity.extend(Game.Symbol);
 
   Entity.prototype.getModel = function () {
     return Game.EntityModel.db[this.attr.model || "nobody"];
