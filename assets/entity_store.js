@@ -5,7 +5,7 @@ Game.EntityStore = (function () {
     this.avatar = 0;
     this.next = 0;
     this.all = {};
-    
+
     for (var i in attr) {
       this.add(new Game.Entity(attr[i]));
     }
@@ -25,7 +25,7 @@ Game.EntityStore = (function () {
       this.all[e.store] = e;
     }
 
-    if (e.getModel().getId() == "avatar") {
+    if (e.getModel().getId() === "avatar") {
       this.avatar = e.store;
     }
 

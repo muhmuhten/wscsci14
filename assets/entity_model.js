@@ -1,9 +1,12 @@
 Game.EntityModel = (function () {
   "use strict";
 
+  var Mixin = Game.EntityMixin;
+
   function Model(attr) {
     Game.Symbol.call(this, attr);
     this.id = attr.id;
+    this.mixins = attr.mixins || [];
   }
   Model.extend(Game.Symbol);
 
@@ -23,7 +26,9 @@ Game.EntityModel = (function () {
 
   Model.register(new Model({
     id: "avatar",
-    chr: '@'
+    chr: '@',
+    fg: "yellow",
+    mixins: [Mixin.Walker]
   }));
 
   return Model;

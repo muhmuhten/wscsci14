@@ -6,6 +6,22 @@ Game.Entity = (function () {
     this.attr.model = attr.model || "nobody";
     this.attr.x = attr.x || 0;
     this.attr.y = attr.y || 0;
+
+    var mixins = Game.EntityModel.db[this.attr.model].mixins;
+    console.dir(Game.EntityModel.db);
+    for (var i in mixins) {
+      var mix = mixins[i];
+
+      for (var key in mix) {
+        if (!mix.hasOwnProperty(key)) continue;
+        if (key === "_meta") continue;
+        this[key] = mix[key];
+      }
+
+      if (mix._meta && mix._meta.init) {
+        mix._meta.init.call(this, attr);
+      }
+    }
   }
 
   Entity.prototype.getModel = function () {
