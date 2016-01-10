@@ -18,9 +18,21 @@ Game.UIMode = (function () {
   function keybindHandler(ty, ev) {
     Game.Message.decay();
 
-    var bound = this.keys[ev.code];
+    var code = ev.code;
+    if (ev.shiftKey) {
+      code = "Shift" + code;
+    }
+    if (ev.altKey) {
+      code = "Alt" + code;
+    }
+    if (ev.ctrlKey) {
+      code = "Control" + code;
+    }
+
+    var bound = this.keys[code];
     if (bound == null) {
-      Game.Message.send("You pressed: " + ev.code);
+      Game.Message.send("You pressed: " + code);
+      console.dir(ev);
     }
     else if (typeof bound === "string") {
       Game.switchMode(bound);
