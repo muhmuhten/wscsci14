@@ -32,7 +32,6 @@ Game.UIMode = (function () {
     var bound = this.keys[code];
     if (bound == null) {
       Game.Message.send("You pressed: " + code);
-      console.dir(ev);
     }
     else if (typeof bound === "string") {
       Game.switchMode(bound);
@@ -46,12 +45,8 @@ Game.UIMode = (function () {
     STORE_KEY: "6b8b78f9bf0bec2540201010245841c71cd7c1b5297bf2a051fb0373",
 
     menu: {
-      enter: function () {
-        console.log("menu enter");
-      },
-      exit: function () {
-        console.log("menu exit");
-      },
+      enter: noOp,
+      exit: noOp,
       render: {
         main: function (d) {
           d.drawText(1,1, "Press:");
@@ -143,12 +138,8 @@ Game.UIMode = (function () {
     },
 
     play: {
-      enter: function () {
-        console.log("play enter");
-      },
-      exit: function () {
-        console.log("play exit");
-      },
+      enter: noOp,
+      exit: noOp,
       render: {
         main: function (d) {
           Game.state.map.render(d);
@@ -186,12 +177,8 @@ Game.UIMode = (function () {
     },
 
     win: {
-      enter: function () {
-        console.log("winning");
-      },
-      exit: function () {
-        console.log("done winning");
-      },
+      enter: noOp,
+      exit: noOp,
       render: {
         main: function (d) {
           d.drawText(1,1, "CONGATULATION!!! YOU ARE SINNER!!!!");
@@ -200,12 +187,8 @@ Game.UIMode = (function () {
     },
 
     lose: {
-      enter: function () {
-        console.log("losing");
-      },
-      exit: function () {
-        console.log("done losing");
-      },
+      enter: noOp,
+      exit: noOp,
       render: {
         main: function (d) {
           d.drawText(1,1, "whoops you lost the game");
