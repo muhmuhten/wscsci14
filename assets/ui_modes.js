@@ -9,6 +9,12 @@ Game.UIMode = (function () {
 
   function noOp() {}
 
+  function mapMover(x,y) {
+    return function () {
+      Game.state.map.moveCamera(x,y);
+    }
+  }
+
   var UIMode = {
     STORE_KEY: "6b8b78f9bf0bec2540201010245841c71cd7c1b5297bf2a051fb0373",
 
@@ -107,7 +113,7 @@ Game.UIMode = (function () {
     save: {
       enter: function () {
         if (!checkLocalStorage()) {
-          Game.switchMode("play");
+          Game.switchMode("menu");
           return;
         }
 
@@ -159,6 +165,15 @@ Game.UIMode = (function () {
         Enter: "win",
         Escape: "lose",
         KeyS: "menu",
+        Digit1: mapMover(-1,1),
+        Digit2: mapMover(0,1),
+        Digit3: mapMover(1,1),
+        Digit4: mapMover(-1,0),
+        Digit5: noOp,
+        Digit6: mapMover(1,0),
+        Digit7: mapMover(-1,-1),
+        Digit8: mapMover(0,-1),
+        Digit9: mapMover(1,-1),
       },
     },
 
