@@ -42,7 +42,7 @@
     switchMode: function (key) {
       var mode = Game.UIMode[key];
       if (mode == null) {
-        Game.Message.send("%c{red}Switched to bad mode '" + key + "'");
+        Game.Message.warn("Switched to bad mode '" + key + "'");
       }
       this._switchMode(mode);
     },

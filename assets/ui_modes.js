@@ -3,7 +3,7 @@ Game.UIMode = (function () {
 
   function checkLocalStorage() {
     if (window.localStorage) return true;
-    Game.Message.send("%c{yellow}Local storage not available.");
+    Game.Message.warn("Local storage not available.");
     return false;
   }
 
@@ -93,7 +93,7 @@ Game.UIMode = (function () {
 
         var state = localStorage.getItem(UIMode.STORE_KEY);
         if (state == null) {
-          Game.Message.send("%c{yellow}No saved game found.");
+          Game.Message.warn("No saved game found.");
           Game.switchMode("newGame");
           return;
         }

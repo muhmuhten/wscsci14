@@ -3,13 +3,18 @@ Game.Message = (function () {
 
   return {
     QUEUE_SIZE: 20,
-    OLD_COLORS: "%c{#666}",
-    NEW_COLORS: "%c{#ff0}",
+    OLD_COLORS: "%c{grey}",
+    NEW_COLORS: "%c{yellow}",
+    WARNING_COLORS: "%c{red}",
 
     _queue: [],
 
     clear: function () {
       this._queue = [];
+    },
+
+    warn: function (msg) {
+      this.send(msg, this.WARNING_COLORS);
     },
 
     send: function (msg, colors) {
