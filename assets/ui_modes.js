@@ -1,12 +1,6 @@
 Game.UIMode = (function () {
   "use strict";
 
-  var DEFAULTS = {
-    FG: '#fff',
-    BG: '#000',
-    STORE_KEY: "6b8b78f9bf0bec2540201010245841c71cd7c1b5297bf2a051fb0373"
-  };
-
   function checkLocalStorage() {
     if (window.localStorage) return true;
     Game.Message.send("%c{yellow}Local storage not available.");
@@ -14,12 +8,9 @@ Game.UIMode = (function () {
   }
 
   function noOp() {}
-  function writeTo(d, x,y, msg, fg, bg) {
-    return d.drawText(x,y, msg, fg || DEFAULTS.FG, bg || DEFAULTS.bg);
-  }
 
-  return {
-    DEFAULTS: DEFAULTS,
+  var UIMode = {
+    STORE_KEY: "6b8b78f9bf0bec2540201010245841c71cd7c1b5297bf2a051fb0373",
 
     menu: {
       enter: function () {
@@ -30,12 +21,12 @@ Game.UIMode = (function () {
       },
       render: {
         main: function (d) {
-          writeTo(d, 1,1, "Press:");
-          writeTo(d, 3,3, "[N] Start a new game");
+          d.drawText(1,1, "Press:");
+          d.drawText(3,3, "[N] Start a new game");
 
           if (checkLocalStorage()) {
-            writeTo(d, 3,4, "[L] Load the saved game");
-            writeTo(d, 3,5, "[S] Save the current game");
+            d.drawText(3,4, "[L] Load the saved game");
+            d.drawText(3,5, "[S] Save the current game");
           }
         },
       },
@@ -101,7 +92,7 @@ Game.UIMode = (function () {
           return;
         }
 
-        var store = localStorage.getItem(DEFAULTS.STORE_KEY);
+        var store = localStorage.getItem(UIMode.STORE_KEY);
         if (store == null) {
           Game.Message.send("%c{yellow}No saved game found.");
           Game.switchMode("newGame");
@@ -129,7 +120,7 @@ Game.UIMode = (function () {
           rng: ROT.RNG.getState(),
           map: Game._state.map.attr,
         };
-        localStorage.setItem(DEFAULTS.STORE_KEY, JSON.stringify(state));
+        localStorage.setItem(UIMode.STORE_KEY, JSON.stringify(state));
         Game.switchMode("play");
       },
       exit: noOp,
@@ -146,14 +137,14 @@ Game.UIMode = (function () {
       render: {
         main: function (d) {
           Game._state.map.render(d);
-          writeTo(d, 1,1, "Game play:");
-          writeTo(d, 3,3, "Press [RET] to win.");
-          writeTo(d, 3,4, "Press [ESC] to lose.");
-          writeTo(d, 3,4, "Press [S] to access the persistence menu.");
+          d.drawText(1,1, "Game play:");
+          d.drawText(3,3, "Press [RET] to win.");
+          d.drawText(3,4, "Press [ESC] to lose.");
+          d.drawText(3,4, "Press [S] to access the persistence menu.");
         },
       },
       handleInput: function (ty, ev) {
-        Game.Message.send("You pressed: " + String.fromCharCode(ev.charCode));
+        Game.Message.send("You pressed: " + ev.code);
 
         if (ev.code === "Enter") {
           Game.switchMode("win");
@@ -178,7 +169,7 @@ Game.UIMode = (function () {
       },
       render: {
         main: function (d) {
-          writeTo(d, 1,1, "CONGATULATION!!! YOU ARE SINNER!!!!");
+          d.drawText(1,1, "CONGATULATION!!! YOU ARE SINNER!!!!");
         },
       }
     },
@@ -192,9 +183,11 @@ Game.UIMode = (function () {
       },
       render: {
         main: function (d) {
-          writeTo(d, 1,1, "whoops you lost the game");
+          d.drawText(1,1, "whoops you lost the game");
         },
       }
     },
   };
+
+  return UIMode;
 })();

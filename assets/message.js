@@ -2,26 +2,28 @@ Game.Message = (function () {
   "use strict";
 
   return {
-    QUEUE_SIZE: Game._displays.message.frame.height, // XXX
-    _qix: 0,
-    _que: [],
+    QUEUE_SIZE: 20,
+    OLD_COLORS: "%c{#666}",
+    NEW_COLORS: "%c{#ff0}",
+
+    _queue: [],
+    _fresh: 0,
 
     clear: function () {
-      this._que = [];
-      this._qix = 0;
+      this._queue = [];
     },
 
-    send: function (msg) {
-      this._que[this._qix] = msg;
-      this._qix += 1;
-      this._qix %= this.QUEUE_SIZE;
+    send: function (msg, colors) {
+      this._queue.unshift([colors || this.NEW_COLORS, msg]);
+      delete this._queue[this.QUEUE_SIZE]; // size limit
     },
 
     render: function (disp) {
-      for (var i = 0; i < this.QUEUE_SIZE; i++) {
-        var j = (this._qix + i) % this.QUEUE_SIZE;
-        var m = this._que[j] || "";
-        disp.drawText(1,i, m);
+      var i = disp.getOptions().height;
+      for (i--; i >= 0; i--) {
+        var msg = this._queue[i];
+        if (!msg) continue;
+        disp.drawText(1,i, this._queue[i].join(""));
       }
     }
   };

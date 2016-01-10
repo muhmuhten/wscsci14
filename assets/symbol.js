@@ -3,8 +3,9 @@ Game.Symbol = (function () {
 
   function Symbol(attr) {
     this.chr = attr.chr || '*';
-    this.fg = attr.fg || Game.UIMode.DEFAULTS.FG;
-    this.bg = attr.bg || Game.UIMode.DEFAULTS.BG;
+    // it's ok for these to be undefined, .draw() does the right thing
+    this.fg = attr.fg;
+    this.bg = attr.bg;
   }
 
   Symbol.prototype.getChr = function () {
