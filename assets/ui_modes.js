@@ -149,15 +149,26 @@ Game.UIMode = (function () {
       render: {
         main: function (d) {
           Game.state.map.render(d);
-          d.drawText(1,1, "Game play:");
-          d.drawText(3,3, "Press [RET] to win.");
-          d.drawText(3,4, "Press [ESC] to lose.");
-          d.drawText(3,5, "Press [S] to access the persistence menu.");
         },
         avatar: function (d) {
           var avatar = Game.state.entities.getAvatar();
-          d.drawText(1,2, "avatar x: " + avatar.getX());
-          d.drawText(1,3, "avatar y: " + avatar.getY());
+          d.drawText(1,1, "avatar x: " + avatar.getX());
+          d.drawText(1,2, "avatar y: " + avatar.getY());
+
+          d.drawText(1,4, "Controls:");
+          d.drawText(1,5, "[RET] win");
+          d.drawText(1,6, "[ESC] lose");
+          d.drawText(1,7, "[S] Back to menu");
+
+          d.drawText(1,9, "Numpad directions:");
+          d.drawText(6,11, "7  8  9");
+          d.drawText(6,13, "4     6");
+          d.drawText(6,15, "1  2  3");
+
+          d.drawText(1,17, "vi-keys style:");
+          d.drawText(6,19, "y  k  u");
+          d.drawText(6,21, "h     l");
+          d.drawText(6,23, "b  j  n");
         },
       },
       handleInput: keybindHandler,
