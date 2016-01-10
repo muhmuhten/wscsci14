@@ -55,6 +55,7 @@
     },
 
     newState: function (attr) {
+      this.track = {}; // ephemeral data container
       this.state = new this.StateWrapper(attr);
     },
 
