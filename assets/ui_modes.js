@@ -132,25 +132,28 @@ Game.UIMode = (function () {
           d.drawText(1,1, "Game play:");
           d.drawText(3,3, "Press [RET] to win.");
           d.drawText(3,4, "Press [ESC] to lose.");
-          d.drawText(3,4, "Press [S] to access the persistence menu.");
+          d.drawText(3,5, "Press [S] to access the persistence menu.");
         },
       },
       handleInput: function (ty, ev) {
         Game.Message.decay();
-        Game.Message.send("You pressed: " + ev.code);
 
-        if (ev.code === "Enter") {
-          Game.switchMode("win");
-          return;
+        var bound = this.keys[ev.code];
+        if (bound == null) {
+          Game.Message.send("You pressed: " + ev.code);
         }
-        if (ev.code === "Escape") {
-          Game.switchMode("lose");
-          return;
+        else if (typeof bound === "string") {
+          Game.switchMode(bound);
         }
-        if (ev.code === "KeyS") {
-          Game.switchMode("menu");
+        else { // assume function, can expand
+          bound(ty, ev);
         }
-      }
+      },
+      keys: {
+        Enter: "win",
+        Escape: "lose",
+        KeyS: "menu",
+      },
     },
 
     win: {
