@@ -111,6 +111,12 @@ Game.UIMode = (function () {
           return;
         }
 
+        if (Game.state == null) {
+          Game.Message.warn("No game to save.");
+          Game.switchMode("menu");
+          return;
+        }
+
         localStorage.clear();
         localStorage.setItem(UIMode.STORE_KEY, JSON.stringify(Game.state));
         Game.switchMode("play");
