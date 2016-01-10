@@ -9,9 +9,9 @@ Game.UIMode = (function () {
 
   function noOp() {}
 
-  function mapMover(x,y) {
+  function moveAvatar(x,y) {
     return function () {
-      Game.state.map.moveCamera(x,y);
+      Game.state.entities.getAvatar().move(x,y);
     }
   }
 
@@ -166,24 +166,24 @@ Game.UIMode = (function () {
         Escape: "lose",
         KeyS: "menu",
 
-        Digit1: mapMover(-1,1),
-        Digit2: mapMover(0,1),
-        Digit3: mapMover(1,1),
-        Digit4: mapMover(-1,0),
+        Digit1: moveAvatar(-1,1),
+        Digit2: moveAvatar(0,1),
+        Digit3: moveAvatar(1,1),
+        Digit4: moveAvatar(-1,0),
         Digit5: noOp,
-        Digit6: mapMover(1,0),
-        Digit7: mapMover(-1,-1),
-        Digit8: mapMover(0,-1),
-        Digit9: mapMover(1,-1),
+        Digit6: moveAvatar(1,0),
+        Digit7: moveAvatar(-1,-1),
+        Digit8: moveAvatar(0,-1),
+        Digit9: moveAvatar(1,-1),
 
-        KeyH: mapMover(-1,0),
-        KeyJ: mapMover(0,1),
-        KeyK: mapMover(0,-1),
-        KeyL: mapMover(1,0),
-        KeyY: mapMover(-1,-1),
-        KeyU: mapMover(1,-1),
-        KeyB: mapMover(-1,1),
-        KeyN: mapMover(1,1),
+        KeyH: moveAvatar(-1,0),
+        KeyJ: moveAvatar(0,1),
+        KeyK: moveAvatar(0,-1),
+        KeyL: moveAvatar(1,0),
+        KeyY: moveAvatar(-1,-1),
+        KeyU: moveAvatar(1,-1),
+        KeyB: moveAvatar(-1,1),
+        KeyN: moveAvatar(1,1),
       },
     },
 

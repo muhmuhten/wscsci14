@@ -24,6 +24,10 @@ Game.Entity = (function () {
   Entity.prototype.setY = function (y) {
     this.attr.y = y;
   };
+  Entity.prototype.move = function (x,y) {
+    this.setX(this.getX() + x);
+    this.setY(this.getY() + y);
+  };
 
   return Entity;
 })();
