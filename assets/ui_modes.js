@@ -11,7 +11,7 @@ Game.UIMode = (function () {
 
   function moveAvatar(x,y) {
     return function () {
-      Game.state.entities.getAvatar().move(x,y);
+      Game.state.entities.getAvatar().walk(x,y);
     }
   }
 
