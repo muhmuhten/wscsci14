@@ -27,7 +27,7 @@ Game.EntityModel = (function () {
   Model.register(new Model({
     id: "avatar",
     chr: '@',
-    fg: "yellow",
+    fg: "magenta",
     mixins: [Mixin.Walker]
   }));
 

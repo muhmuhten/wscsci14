@@ -26,7 +26,8 @@ Game.Tile = (function () {
   }));
   Tile.register(new Tile({
     id: "wall",
-    chr: '#'
+    chr: '#',
+    fg: "gold"
   }));
 
   return Tile;
