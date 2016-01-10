@@ -75,10 +75,9 @@ Game.UIMode = (function () {
           }
         });
 
-        // XXX this is a weird place to put state
-        Game._state = {
-          map: new Game.Map({tiles: tiles}),
-        };
+        Game.newState({
+          map: {tiles: tiles},
+        });
 
         Game.switchMode("play");
       },
@@ -92,18 +91,14 @@ Game.UIMode = (function () {
           return;
         }
 
-        var store = localStorage.getItem(UIMode.STORE_KEY);
-        if (store == null) {
+        var state = localStorage.getItem(UIMode.STORE_KEY);
+        if (state == null) {
           Game.Message.send("%c{yellow}No saved game found.");
           Game.switchMode("newGame");
           return;
         }
 
-        var state = JSON.parse(store);
-        Game._state = {
-          map: new Game.Map(state.map),
-        }
-        ROT.RNG.setState(state.rng);
+        Game.newState(JSON.parse(state));
         Game.switchMode("play");
       },
       exit: noOp,
@@ -116,11 +111,8 @@ Game.UIMode = (function () {
           return;
         }
 
-        var state = {
-          rng: ROT.RNG.getState(),
-          map: Game._state.map.attr,
-        };
-        localStorage.setItem(UIMode.STORE_KEY, JSON.stringify(state));
+        localStorage.clear();
+        localStorage.setItem(UIMode.STORE_KEY, JSON.stringify(Game.state));
         Game.switchMode("play");
       },
       exit: noOp,
@@ -136,7 +128,7 @@ Game.UIMode = (function () {
       },
       render: {
         main: function (d) {
-          Game._state.map.render(d);
+          Game.state.map.render(d);
           d.drawText(1,1, "Game play:");
           d.drawText(3,3, "Press [RET] to win.");
           d.drawText(3,4, "Press [ESC] to lose.");

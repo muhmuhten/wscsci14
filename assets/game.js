@@ -54,6 +54,10 @@
       this.renderAll();
     },
 
+    newState: function (attr) {
+      this.state = new this.StateWrapper(attr);
+    },
+
     _displays: {
       main: {
         frame: { width: 80, height: 24 },
