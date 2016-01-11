@@ -72,7 +72,7 @@ Game.UIMode = (function () {
         var gener = new ROT.Map.Cellular(800, 240);
         gener.randomize(0.5);
 
-        for (var i = 3; i >= 0; i--) {
+        for (var i = 8; i >= 0; i--) {
           gener.create();
         }
 
@@ -80,10 +80,10 @@ Game.UIMode = (function () {
           if (tiles[x] == null) tiles[x] = [];
 
           if (v === 0) {
-            tiles[x][y] = "wall";
+            tiles[x][y] = "floor";
           }
           else {
-            tiles[x][y] = "floor";
+            tiles[x][y] = "wall";
           }
         });
 
@@ -152,23 +152,23 @@ Game.UIMode = (function () {
         },
         avatar: function (d) {
           var avatar = Game.state.entities.getAvatar();
-          d.drawText(1,1, "avatar x: " + avatar.getX());
-          d.drawText(1,2, "avatar y: " + avatar.getY());
+          var row = 0;
 
-          d.drawText(1,4, "Controls:");
-          d.drawText(1,5, "[RET] win");
-          d.drawText(1,6, "[ESC] lose");
-          d.drawText(1,7, "[S] Back to menu");
-
-          d.drawText(1,9, "Numpad directions:");
-          d.drawText(6,11, "7  8  9");
-          d.drawText(6,13, "4     6");
-          d.drawText(6,15, "1  2  3");
-
-          d.drawText(1,17, "vi-keys style:");
-          d.drawText(6,19, "y  k  u");
-          d.drawText(6,21, "h     l");
-          d.drawText(6,23, "b  j  n");
+          row++;
+          d.drawText(1,row++, "avatar x: " + avatar.getX());
+          d.drawText(1,row++, "avatar y: " + avatar.getY());
+          d.drawText(1,row++, "turns:    " + avatar.getTurns());
+          row++;
+          d.drawText(1,row++, "Controls:");
+          d.drawText(1,row++, "[RET] win");
+          d.drawText(1,row++, "[ESC] lose");
+          d.drawText(1,row++, "[S] Back to menu");
+          row++;
+          d.drawText(1,row++, "Directions:");
+          row++;
+          d.drawText(5,row++, "789   yku");
+          d.drawText(5,row++, "4 6   h l");
+          d.drawText(5,row++, "123   bjn");
         },
       },
       handleInput: keybindHandler,

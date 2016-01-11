@@ -7,8 +7,9 @@ Game.Entity = (function () {
     this.attr.x = attr.x || 0;
     this.attr.y = attr.y || 0;
 
+    this._events = {}
+
     var mixins = Game.EntityModel.db[this.attr.model].mixins;
-    console.dir(Game.EntityModel.db);
     for (var i in mixins) {
       var mix = mixins[i];
 
@@ -43,6 +44,19 @@ Game.Entity = (function () {
   Entity.prototype.move = function (x,y) {
     this.setX(this.getX() + x);
     this.setY(this.getY() + y);
+  };
+
+  Entity.prototype.listen = function (ty, f) {
+    this._events[ty] = this._events[ty] || [];
+    this._events[ty].push(f);
+  };
+  Entity.prototype.hear = function (ty) {
+    if (this._events[ty]) {
+      for (var key in this._events[ty]) {
+        this._events[ty][key].apply(this,
+            Array.prototype.slice.call(arguments, 1));
+      }
+    }
   };
 
   return Entity;

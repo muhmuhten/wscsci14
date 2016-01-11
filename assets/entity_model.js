@@ -28,7 +28,7 @@ Game.EntityModel = (function () {
     id: "avatar",
     chr: '@',
     fg: "magenta",
-    mixins: [Mixin.Walker]
+    mixins: [Mixin.Walker, Mixin.Chronicle]
   }));
 
   return Model;
