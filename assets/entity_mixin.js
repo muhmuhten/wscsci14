@@ -20,6 +20,19 @@ Game.EntityMixin = (function () {
       },
     },
 
+    ColourChanging: {
+      _meta: {
+        init: function (attr) {
+          this.listen("move", function () {
+            this.getModel().fg = ROT.Color.toHex(
+                ROT.Color.randomize(
+                  ROT.Color.fromString(this.getModel().fg),
+                  [20,20,20]));
+          });
+        },
+      },
+    },
+
     Chronicle: {
       _meta: {
         init: function (attr) {
