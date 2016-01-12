@@ -16,12 +16,14 @@ Game.EntityMixin = (function () {
           return {what: "wall"};
         }
 
-        // XXX probably stupid inefficient
-        var overlap = Game.state.entities.any(function (e) {
-          return e.getX() === newX && e.getY() === newY;
-        });
-        if (overlap) {
-          return {what: "entity", info: overlap};
+        // XXX still stupid inefficient, violates encapsulation
+        for (var key in Game.state.entities.all) {
+          if (!Game.state.entities.all.hasOwnProperty(key)) continue;
+
+          var e = Game.state.entities.all[key];
+          if (e.getX() === newX && e.getY() === newY) {
+            return {what: "entity", info: e};
+          }
         }
 
         this.move(x,y);
