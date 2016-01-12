@@ -16,7 +16,7 @@ Game.Map = (function () {
   };
 
   Map.prototype.getTile = function (x,y) {
-    return Game.Tile.db[(this.attr.tiles[x] || [])[y] || "wall"];
+    return Game.Tile.db[(this.attr.tiles[x] || [])[y] || "empty"];
   };
 
   Map.prototype.chooseTile = function (f, tries) {

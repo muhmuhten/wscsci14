@@ -22,7 +22,8 @@ Game.Tile = (function () {
 
   Tile.register(new Tile({
     id: "empty",
-    chr: ' '
+    chr: '#',
+    fg: "white"
   }));
   Tile.register(new Tile({
     id: "floor",

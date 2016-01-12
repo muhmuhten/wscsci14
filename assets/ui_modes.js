@@ -76,13 +76,7 @@ Game.UIMode = (function () {
     newGame: {
       enter: function () {
         var tiles = [];
-        var gener = new ROT.Map.Cellular(800, 240);
-        gener.randomize(0.5);
-
-        for (var i = 8; i >= 0; i--) {
-          gener.create();
-        }
-
+        var gener = new ROT.Map.Digger(80, 24);
         gener.create(function (x,y,v) {
           if (tiles[x] == null) tiles[x] = [];
 
@@ -103,7 +97,7 @@ Game.UIMode = (function () {
           pos: Game.state.map.chooseWalkableTile(),
         }));
 
-        for (var i = 1000; --i;) {
+        for (var i = 20; --i;) {
           Game.state.entities.add(new Game.Entity({
             model: "moss",
             pos: Game.state.map.chooseWalkableTile(),
