@@ -2,6 +2,18 @@ Game.EntityMixin = (function () {
   "use strict";
 
   return {
+    Timekeeper: {
+      _meta: {
+        init: function () {
+          this.listen("move", function () {
+            Game.state.entities.each(function (e) {
+              e.hear("time");
+            });
+          });
+        },
+      },
+    },
+
     Walker: {
       _meta: {
         init: function () {
@@ -34,7 +46,7 @@ Game.EntityMixin = (function () {
     ColourChanging: {
       _meta: {
         init: function (attr) {
-          this.listen("move", function () {
+          this.listen("time", function () {
             this.getModel().fg = ROT.Color.toHex(
                 ROT.Color.randomize(
                   ROT.Color.fromString(this.getModel().fg),
@@ -49,7 +61,7 @@ Game.EntityMixin = (function () {
         init: function (attr) {
           this.attr.Chronicle = attr.Chronicle || 0;
 
-          this.listen("move", function () {
+          this.listen("time", function () {
             this.trackTurn();
           });
         },
