@@ -40,10 +40,9 @@ Game.EntityStore = (function () {
       if (!this.all.hasOwnProperty(key)) continue;
 
       if (f(this.all[key])) {
-        return true;
+        return this.all[key];
       }
     }
-    return false;
   };
 
   Store.prototype.each = function (f) {

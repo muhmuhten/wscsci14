@@ -13,7 +13,7 @@ Game.EntityMixin = (function () {
         var newY = this.getY() + y;
 
         if (!Game.state.map.getTile(newX, newY).canWalk()) {
-          return "wall";
+          return {what: "wall"};
         }
 
         // XXX probably stupid inefficient
@@ -21,7 +21,7 @@ Game.EntityMixin = (function () {
           return e.getX() === newX && e.getY() === newY;
         });
         if (overlap) {
-          return "entity";
+          return {what: "entity", info: overlap};
         }
 
         this.move(x,y);
