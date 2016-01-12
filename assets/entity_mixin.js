@@ -50,5 +50,9 @@ Game.EntityMixin = (function () {
         this.attr.turnsCtr++;
       },
     },
+
+    Invisible: {
+      render: function () {},
+    },
   };
 })();

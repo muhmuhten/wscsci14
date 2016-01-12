@@ -53,7 +53,7 @@ Game.Map = (function () {
     }
 
     Game.state.entities.each(function (ent) {
-      ent.getModel().render(disp, ent.getX() - xoff, ent.getY() - yoff);
+      ent.render(disp, ent.getX() - xoff, ent.getY() - yoff);
     });
   };
 

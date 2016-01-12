@@ -50,6 +50,10 @@ Game.Entity = (function () {
     this.setY(this.getY() + y);
   };
 
+  Entity.prototype.render = function (disp, x,y) {
+    this.getModel().render(disp, x,y);
+  };
+
   Entity.prototype.listen = function (ty, f) {
     this._events[ty] = this._events[ty] || [];
     this._events[ty].push(f);
