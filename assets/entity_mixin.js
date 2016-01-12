@@ -36,7 +36,8 @@ Game.EntityMixin = (function () {
     Chronicle: {
       _meta: {
         init: function (attr) {
-          this.attr.turnsCtr = attr.turnsCtr || 0;
+          this.attr.Chronicle = attr.Chronicle || 0;
+
           this.listen("move", function () {
             this.trackTurn();
           });
@@ -44,10 +45,10 @@ Game.EntityMixin = (function () {
       },
 
       getTurns: function () {
-        return this.attr.turnsCtr;
+        return this.attr.Chronicle;
       },
       trackTurn: function () {
-        this.attr.turnsCtr++;
+        this.attr.Chronicle++;
       },
     },
 
