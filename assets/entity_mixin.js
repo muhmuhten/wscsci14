@@ -13,12 +13,10 @@ Game.EntityMixin = (function () {
         var newY = this.getY() + y;
 
         // XXX check properties instead of name
-        if (Game.state.map.getTile(newX, newY).getId() !== "floor") {
-          return true;
+        if (Game.state.map.getTile(newX, newY).canWalk()) {
+          this.move(x,y);
+          this.hear("move", newX, newY);
         }
-
-        this.move(x,y);
-        this.hear("move", newX, newY);
       },
     },
 

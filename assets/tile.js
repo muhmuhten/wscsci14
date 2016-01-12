@@ -4,11 +4,15 @@ Game.Tile = (function () {
   function Tile(attr) {
     Game.Symbol.call(this, attr);
     this.id = attr.id;
+    this.walkable = attr.walkable;
   }
   Tile.extend(Game.Symbol);
 
   Tile.prototype.getId = function () {
     return this.id;
+  };
+  Tile.prototype.canWalk = function () {
+    return this.walkable;
   };
 
   Tile.db = {};
@@ -22,7 +26,8 @@ Game.Tile = (function () {
   }));
   Tile.register(new Tile({
     id: "floor",
-    chr: '.'
+    chr: '.',
+    walkable: true
   }));
   Tile.register(new Tile({
     id: "wall",
