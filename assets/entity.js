@@ -41,6 +41,10 @@ Game.Entity = (function () {
   Entity.prototype.setY = function (y) {
     this.attr.y = y;
   };
+  Entity.prototype.setPos = function (x,y) {
+    if (x != null) this.setX(x);
+    if (y != null) this.setY(y);
+  };
   Entity.prototype.move = function (x,y) {
     this.setX(this.getX() + x);
     this.setY(this.getY() + y);

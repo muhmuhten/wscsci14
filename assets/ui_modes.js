@@ -91,11 +91,9 @@ Game.UIMode = (function () {
           map: {tiles: tiles},
         });
 
-        Game.state.entities.add(new Game.Entity({
-          model: "avatar",
-          x: 20,
-          y: 10,
-        }));
+        var avatar = new Game.Entity({model: "avatar"});
+        avatar.setPos.apply(avatar, Game.state.map.chooseWalkableTile());
+        Game.state.entities.add(avatar);
 
         Game.switchMode("play");
       },
