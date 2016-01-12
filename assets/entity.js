@@ -4,8 +4,15 @@ Game.Entity = (function () {
   function Entity(attr) {
     this.attr = this.attr || {};
     this.attr.model = attr.model || "nobody";
-    this.attr.x = attr.x || 0;
-    this.attr.y = attr.y || 0;
+
+    if (attr.pos) {
+      this.attr.x = attr.pos[0];
+      this.attr.y = attr.pos[1];
+    }
+    else {
+      this.attr.x = attr.x || 0;
+      this.attr.y = attr.y || 0;
+    }
 
     this._events = {}
 

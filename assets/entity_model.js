@@ -31,5 +31,12 @@ Game.EntityModel = (function () {
     mixins: [Mixin.Walker, Mixin.Chronicle, Mixin.ColourChanging]
   }));
 
+  Model.register(new Model({
+    id: "moss",
+    chr: '%',
+    fg: 'green',
+    mixins: [Mixin.ColourChanging]
+  }));
+
   return Model;
 })();
