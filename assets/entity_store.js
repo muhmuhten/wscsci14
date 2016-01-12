@@ -34,6 +34,18 @@ Game.EntityStore = (function () {
   Store.prototype.get = function (n) {
     return this.all[n];
   };
+
+  Store.prototype.any = function (f) {
+    for (var key in this.all) {
+      if (!this.all.hasOwnProperty(key)) continue;
+
+      if (f(this.all[key])) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   Store.prototype.each = function (f) {
     for (var key in this.all) {
       if (!this.all.hasOwnProperty(key)) continue;

@@ -11,7 +11,14 @@ Game.UIMode = (function () {
 
   function moveAvatar(x,y) {
     return function () {
-      Game.state.entities.getAvatar().walk(x,y);
+      var res = Game.state.entities.getAvatar().walk(x,y);
+      if (!res) return;
+
+      switch (res) {
+        case "entity":
+          Game.Message.send("Stop. Something is in the way.");
+          break;
+      }
     }
   }
 
@@ -83,7 +90,7 @@ Game.UIMode = (function () {
             tiles[x][y] = "floor";
           }
           else {
-            tiles[x][y] = "wall";
+            tiles[x][y] = ROT.RNG.getUniformInt(0,20) ? "wall" : "crystal";
           }
         });
 
@@ -95,6 +102,13 @@ Game.UIMode = (function () {
           model: "avatar",
           pos: Game.state.map.chooseWalkableTile(),
         }));
+
+        for (var i = 100; --i;) {
+          Game.state.entities.add(new Game.Entity({
+            model: "moss",
+            pos: Game.state.map.chooseWalkableTile(),
+          }));
+        }
 
         Game.switchMode("play");
       },

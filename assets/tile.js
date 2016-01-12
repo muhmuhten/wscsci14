@@ -35,5 +35,13 @@ Game.Tile = (function () {
     fg: "gold"
   }));
 
+  Tile.register(new Tile({
+    id: "crystal",
+    chr: '#'
+  }));
+  Tile.db.crystal.getFg = function () {
+    return ROT.Color.toHex(ROT.Color.randomize([100,100,100], [100,100,100]));
+  };
+
   return Tile;
 })();

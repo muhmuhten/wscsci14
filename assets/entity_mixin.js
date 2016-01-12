@@ -12,11 +12,20 @@ Game.EntityMixin = (function () {
         var newX = this.getX() + x;
         var newY = this.getY() + y;
 
-        // XXX check properties instead of name
-        if (Game.state.map.getTile(newX, newY).canWalk()) {
-          this.move(x,y);
-          this.hear("move", newX, newY);
+        if (!Game.state.map.getTile(newX, newY).canWalk()) {
+          return "wall";
         }
+
+        // XXX probably stupid inefficient
+        var overlap = Game.state.entities.any(function (e) {
+          return e.getX() === newX && e.getY() === newY;
+        });
+        if (overlap) {
+          return "entity";
+        }
+
+        this.move(x,y);
+        this.hear("move", newX, newY);
       },
     },
 
