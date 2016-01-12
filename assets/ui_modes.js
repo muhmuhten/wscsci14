@@ -16,7 +16,7 @@ Game.UIMode = (function () {
 
       switch (res.what) {
         case "entity":
-          Game.Message.send("Stop. Something is in the way.");
+          res.info.hear("touch", Game.state.entities.getAvatar());
           break;
       }
     }
@@ -97,7 +97,7 @@ Game.UIMode = (function () {
           pos: Game.state.map.chooseWalkableTile(),
         }));
 
-        for (var i = 20; --i;) {
+        for (var i = 20; i--;) {
           Game.state.entities.add(new Game.Entity({
             model: "moss",
             pos: Game.state.map.chooseWalkableTile(),

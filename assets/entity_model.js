@@ -35,7 +35,7 @@ Game.EntityModel = (function () {
     id: "moss",
     chr: '%',
     fg: 'green',
-    mixins: [Mixin.ColourChanging]
+    mixins: [Mixin.ColourChanging, Mixin.Mortal, Mixin.TouchToKill]
   }));
 
   return Model;

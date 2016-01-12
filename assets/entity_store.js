@@ -20,19 +20,22 @@ Game.EntityStore = (function () {
   }
 
   Store.prototype.add = function (e) {
-    if (e.store == null) {
-      e.store = this.next++;
-      this.all[e.store] = e;
+    if (e.storeKey == null) {
+      e.storeKey = this.next++;
+      this.all[e.storeKey] = e;
     }
 
     if (e.getModel().getId() === "avatar") {
-      this.avatar = e.store;
+      this.avatar = e.storeKey;
     }
 
-    return e.store;
+    return e.storeKey;
   };
   Store.prototype.get = function (n) {
     return this.all[n];
+  };
+  Store.prototype.remove = function (n) {
+    delete this.all[n];
   };
 
   Store.prototype.any = function (f) {
