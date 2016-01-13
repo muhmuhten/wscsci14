@@ -10,8 +10,6 @@ Implemented features
 
 Obvious bugs
 
-- messages are not persisted
-
 Next milestone
 
 - mobs that move and attack

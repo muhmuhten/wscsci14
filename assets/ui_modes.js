@@ -88,9 +88,11 @@ Game.UIMode = (function () {
           }
         });
 
-        Game.newState({
+        Game.state = new Game.StateWrapper({
           map: {tiles: tiles},
         });
+
+        Game.Message.send("New game! Try not to die.");
 
         Game.state.entities.add(new Game.Entity({
           model: "avatar",
@@ -123,7 +125,8 @@ Game.UIMode = (function () {
           return;
         }
 
-        Game.newState(JSON.parse(state));
+        Game.state = new Game.StateWrapper(JSON.parse(state));
+        Game.Message.send("Welcome back! Try not to die.");
         Game.switchMode("play");
       },
       exit: noOp,

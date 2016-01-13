@@ -5,6 +5,7 @@ Game.StateWrapper = (function () {
     if (attr.rng != null) {
       ROT.RNG.setState(attr.rng);
     }
+    this.msq = attr.msq;
     this.map = new Game.Map(attr.map);
     this.entities = new Game.EntityStore(attr.entities || {});
   }
