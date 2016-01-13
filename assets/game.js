@@ -54,9 +54,6 @@
       this.renderAll();
     },
 
-    // ephemeral initial state object to collect early menu messages
-    state: {},
-
     _displays: {
       main: {
         frame: { width: 80, height: 24 },

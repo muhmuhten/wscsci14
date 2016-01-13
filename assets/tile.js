@@ -35,6 +35,12 @@ Game.Tile = (function () {
     chr: '#',
     fg: "gold"
   }));
+  Tile.register(new Tile({
+    id: "exit",
+    chr: '<',
+    fg: "blue",
+    walkable: true
+  }));
 
   Tile.register(new Tile({
     id: "crystal",

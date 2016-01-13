@@ -9,6 +9,13 @@ Game.UIMode = (function () {
 
   function noOp() {}
 
+  function chooseRoomTile(room) {
+    return [
+      ROT.RNG.getUniformInt(room.getLeft(), room.getRight()),
+      ROT.RNG.getUniformInt(room.getTop(), room.getBottom())
+    ];
+  }
+
   function moveAvatar(x,y) {
     return function () {
       var res = Game.state.entities.getAvatar().walk(x,y);
@@ -38,7 +45,6 @@ Game.UIMode = (function () {
 
     var bound = this.keys[code];
     if (bound == null) {
-      Game.Message.send("You pressed: " + code);
     }
     else if (typeof bound === "string") {
       Game.switchMode(bound);
@@ -87,6 +93,9 @@ Game.UIMode = (function () {
             tiles[x][y] = ROT.RNG.getUniformInt(0,20) ? "wall" : "crystal";
           }
         });
+        var rooms = gener.getRooms();
+        var exit = chooseRoomTile(rooms[rooms.length-1]);
+        tiles[exit[0]][exit[1]] = "exit";
 
         Game.state = new Game.StateWrapper({
           map: {tiles: tiles},
@@ -96,7 +105,7 @@ Game.UIMode = (function () {
 
         Game.state.entities.add(new Game.Entity({
           model: "avatar",
-          pos: Game.state.map.chooseWalkableTile(),
+          pos: chooseRoomTile(rooms[0]),
         }));
 
         for (var i = 20; i--;) {
@@ -183,9 +192,19 @@ Game.UIMode = (function () {
       },
       handleInput: keybindHandler,
       keys: {
-        Enter: "win",
         Escape: "lose",
         KeyS: "menu",
+
+        ShiftComma: function () {
+          var avatar = Game.state.entities.getAvatar();
+          var tile = Game.state.map.getTile(avatar.getX(), avatar.getY());
+          if (tile.getId() === "exit") {
+            Game.switchMode("win");
+          }
+          else {
+            Game.Message.send("You can't go up here.");
+          }
+        },
 
         Digit1: moveAvatar(-1,1),
         Digit2: moveAvatar(0,1),

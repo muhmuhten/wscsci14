@@ -9,16 +9,18 @@ Game.Message = (function () {
       "warning": "%c{red}"
     },
 
-    clear: function () {
-      delete Game.state.msq;
-    },
-
     warn: function (msg) {
       this.send(msg, "warning");
     },
 
     send: function (msg, age) {
-      var msq = Game.state.msq = Game.state.msq || [];
+      var msq;
+      if (Game.state == null) {
+        msq = this.tmpq = this.tmpq || [];
+      }
+      else {
+        msq = Game.state.msq = Game.state.msq || [];
+      }
 
       if (msq[0] && msq[0].msg === msg) {
         msq[0].num++;
@@ -34,7 +36,7 @@ Game.Message = (function () {
     },
 
     decay: function (n) {
-      var msq = Game.state.msq || [];
+      var msq = (Game.state && Game.state.msq) || this.tmpq || [];
 
       for (n = n || 0; n < msq.length; n++) {
         msq[n].age = "old";
@@ -42,7 +44,7 @@ Game.Message = (function () {
     },
     
     render: function (disp) {
-      var msq = Game.state.msq || [];
+      var msq = (Game.state && Game.state.msq) || this.tmpq || [];
       var max = disp.getOptions().height - 1;
 
       for (var i = max; i >= 0; i--) {
