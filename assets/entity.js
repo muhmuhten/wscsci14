@@ -57,9 +57,15 @@ Game.Entity = (function () {
     this.setY(this.getY() + y);
   };
 
-  Entity.prototype.render = function (disp, x,y) {
-    this.getModel().render(disp, x,y);
-  };
+  for (var key in Game.Symbol.prototype) {
+    if (!Game.Symbol.prototype.hasOwnProperty(key)) continue;
+    Entity.prototype[key] = (function (k) {
+      return function () {
+        var model = this.getModel();
+        return model[k].apply(model, arguments);
+      }
+    })(key);
+  }
 
   Entity.prototype.listen = function (ty, f) {
     this._events[ty] = this._events[ty] || [];

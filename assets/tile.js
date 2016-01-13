@@ -5,6 +5,7 @@ Game.Tile = (function () {
     Game.Symbol.call(this, attr);
     this.id = attr.id;
     this.walkable = attr.walkable;
+    this.seethrough = attr.seethrough;
   }
   Tile.extend(Game.Symbol);
 
@@ -13,6 +14,9 @@ Game.Tile = (function () {
   };
   Tile.prototype.canWalk = function () {
     return this.walkable;
+  };
+  Tile.prototype.canSee = function () {
+    return this.seethrough;
   };
 
   Tile.db = {};
@@ -28,7 +32,8 @@ Game.Tile = (function () {
   Tile.register(new Tile({
     id: "floor",
     chr: '.',
-    walkable: true
+    walkable: true,
+    seethrough: true
   }));
   Tile.register(new Tile({
     id: "wall",
@@ -44,7 +49,8 @@ Game.Tile = (function () {
 
   Tile.register(new Tile({
     id: "crystal",
-    chr: '#'
+    chr: '#',
+    seethrough: true
   }));
   Tile.db.crystal.getFg = function () {
     return ROT.Color.toHex(ROT.Color.randomize([100,100,100], [100,100,100]));
