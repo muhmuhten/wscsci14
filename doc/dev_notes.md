@@ -12,9 +12,10 @@ Obvious bugs
 
 Next milestone
 
-- mobs that move and attack
+- visibility
 
 Planned changes
 
+- mobs that move and attack
 - items
 - ui stack
