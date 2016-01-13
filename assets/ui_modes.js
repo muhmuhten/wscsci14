@@ -179,8 +179,7 @@ Game.UIMode = (function () {
           d.drawText(1,row++, "turns:    " + avatar.getTurns());
           row++;
           d.drawText(1,row++, "Controls:");
-          d.drawText(1,row++, "[RET] win");
-          d.drawText(1,row++, "[ESC] lose");
+          d.drawText(1,row++, "[<] win, if on <");
           d.drawText(1,row++, "[S] Back to menu");
           row++;
           d.drawText(1,row++, "Directions:");
