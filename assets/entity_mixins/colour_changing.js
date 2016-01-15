@@ -5,9 +5,7 @@ Game.EntityMixin.ColourChanging = (function () {
     render: function () {
       var model = this.getModel();
       model.fg = ROT.Color.toHex(
-          ROT.Color.randomize(
-            ROT.Color.fromString(this.getModel().fg),
-            [10,10,10]));
+          ROT.Color.randomize([200,200,200], [75,75,75]));
       model.render.apply(model, arguments);
     },
   };
