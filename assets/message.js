@@ -42,7 +42,7 @@ Game.Message = (function () {
         msq[n].age = "old";
       }
     },
-    
+
     render: function (disp) {
       var msq = (Game.state && Game.state.msq) || this.tmpq || [];
       var max = disp.getOptions().height - 1;
