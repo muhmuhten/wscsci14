@@ -82,7 +82,7 @@ Game.UIMode = (function () {
     newGame: {
       enter: function () {
         var tiles = [];
-        var gener = new ROT.Map.Digger(800, 240);
+        var gener = new ROT.Map.Digger(80, 24);
         gener.create(function (x,y,v) {
           if (tiles[x] == null) tiles[x] = [];
 
@@ -90,7 +90,7 @@ Game.UIMode = (function () {
             tiles[x][y] = "floor";
           }
           else {
-            tiles[x][y] = ROT.RNG.getUniformInt(0,20) ? "wall" : "crystal";
+            tiles[x][y] = ROT.RNG.getUniformInt(0,3) ? "wall" : "crystal";
           }
         });
         var rooms = gener.getRooms();
@@ -108,7 +108,7 @@ Game.UIMode = (function () {
           pos: chooseRoomTile(rooms[0]),
         }));
 
-        for (var i = 2000; i--;) {
+        for (var i = 10; i--;) {
           Game.state.entities.add(new Game.Entity({
             model: "moss",
             pos: Game.state.map.chooseWalkableTile(),
