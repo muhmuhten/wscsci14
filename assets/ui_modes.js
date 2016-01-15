@@ -36,21 +36,16 @@ Game.UIMode = (function () {
     switch (ty) {
       case "keydown":
         code = "Down" + code;
+        if (ev.shiftKey) {
+          code = "Shift" + code;
+        }
         break;
+
       case "keypress":
         code = String.fromCharCode(code);
         break;
     }
 
-    if (ev.shiftKey) {
-      code = "Shift" + code;
-    }
-    if (ev.altKey) {
-      code = "Alt" + code;
-    }
-    if (ev.ctrlKey) {
-      code = "Control" + code;
-    }
     console.log(code);
 
     var bound = this.keys[code];
@@ -204,7 +199,7 @@ Game.UIMode = (function () {
         Down27: "lose",
         s: "menu",
 
-        "Shift<": function () {
+        "<": function () {
           var avatar = Game.state.entities.getAvatar();
           var tile = Game.state.map.getTile(avatar.getX(), avatar.getY());
           if (tile.getId() === "exit") {
