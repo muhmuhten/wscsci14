@@ -32,7 +32,16 @@ Game.UIMode = (function () {
   function keybindHandler(ty, ev) {
     Game.Message.decay();
 
-    var code = ev.code;
+    var code = ev.charCode || ev.which || ev.keyCode;
+    switch (ty) {
+      case "keydown":
+        code = "Down" + code;
+        break;
+      case "keypress":
+        code = String.fromCharCode(code);
+        break;
+    }
+
     if (ev.shiftKey) {
       code = "Shift" + code;
     }
@@ -42,6 +51,7 @@ Game.UIMode = (function () {
     if (ev.ctrlKey) {
       code = "Control" + code;
     }
+    console.log(code);
 
     var bound = this.keys[code];
     if (bound == null) {
@@ -73,9 +83,9 @@ Game.UIMode = (function () {
       },
       handleInput: keybindHandler,
       keys: {
-        KeyN: "newGame",
-        KeyL: "load",
-        KeyS: "save",
+        n: "newGame",
+        l: "load",
+        s: "save",
       },
     },
 
@@ -191,10 +201,10 @@ Game.UIMode = (function () {
       },
       handleInput: keybindHandler,
       keys: {
-        Escape: "lose",
-        KeyS: "menu",
+        Down27: "lose",
+        s: "menu",
 
-        ShiftComma: function () {
+        "Shift<": function () {
           var avatar = Game.state.entities.getAvatar();
           var tile = Game.state.map.getTile(avatar.getX(), avatar.getY());
           if (tile.getId() === "exit") {
@@ -205,24 +215,24 @@ Game.UIMode = (function () {
           }
         },
 
-        Digit1: moveAvatar(-1,1),
-        Digit2: moveAvatar(0,1),
-        Digit3: moveAvatar(1,1),
-        Digit4: moveAvatar(-1,0),
-        Digit5: noOp,
-        Digit6: moveAvatar(1,0),
-        Digit7: moveAvatar(-1,-1),
-        Digit8: moveAvatar(0,-1),
-        Digit9: moveAvatar(1,-1),
+        1: moveAvatar(-1,1),
+        2: moveAvatar(0,1),
+        3: moveAvatar(1,1),
+        4: moveAvatar(-1,0),
+        5: noOp,
+        6: moveAvatar(1,0),
+        7: moveAvatar(-1,-1),
+        8: moveAvatar(0,-1),
+        9: moveAvatar(1,-1),
 
-        KeyH: moveAvatar(-1,0),
-        KeyJ: moveAvatar(0,1),
-        KeyK: moveAvatar(0,-1),
-        KeyL: moveAvatar(1,0),
-        KeyY: moveAvatar(-1,-1),
-        KeyU: moveAvatar(1,-1),
-        KeyB: moveAvatar(-1,1),
-        KeyN: moveAvatar(1,1),
+        h: moveAvatar(-1,0),
+        j: moveAvatar(0,1),
+        k: moveAvatar(0,-1),
+        l: moveAvatar(1,0),
+        y: moveAvatar(-1,-1),
+        u: moveAvatar(1,-1),
+        b: moveAvatar(-1,1),
+        n: moveAvatar(1,1),
       },
     },
 
