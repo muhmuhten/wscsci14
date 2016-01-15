@@ -32,7 +32,7 @@ Game.UIMode = (function () {
   function keybindHandler(ty, ev) {
     Game.Message.decay();
 
-    var code = ev.code;
+    var code = ev.code || String.fromCharCode(ev.keyCode);
     if (ev.shiftKey) {
       code = "Shift" + code;
     }
