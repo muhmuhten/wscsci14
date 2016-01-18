@@ -2,13 +2,6 @@ Game.EntityMixin.Mortal = (function () {
   "use strict";
 
   return {
-    _meta: {
-      init: function (attr) {
-        this.listen("time", function () {
-        });
-      },
-    },
-
     isDead: function () {
       return false;
     },

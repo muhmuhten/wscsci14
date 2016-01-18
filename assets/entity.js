@@ -26,8 +26,18 @@ Game.Entity = (function () {
         this[key] = mix[key];
       }
 
-      if (mix._meta && mix._meta.init) {
-        mix._meta.init.call(this, attr);
+      if (mix._meta) {
+        if (mix._meta.init) {
+          mix._meta.init.call(this, attr);
+        }
+
+        if (mix._meta.events) {
+          var events = mix._meta.events;
+          for (var evk in events) {
+            if (!events.hasOwnProperty(evk)) continue;
+            this.listen(evk, events[evk]);
+          }
+        }
       }
     }
   }

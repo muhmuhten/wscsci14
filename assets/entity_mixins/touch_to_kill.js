@@ -3,12 +3,12 @@ Game.EntityMixin.TouchToKill = (function () {
 
   return {
     _meta: {
-      init: function (attr) {
-        this.listen("touch", function (by) {
+      events: {
+        touch: function (by) {
           if (by.getModel().getId() === "avatar") {
             this.kill();
           }
-        });
+        },
       },
     },
   };
