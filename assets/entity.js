@@ -2,8 +2,11 @@ Game.Entity = (function () {
   "use strict";
 
   function Entity(attr) {
+    Game.Mixin.call(this);
+
     this.attr = this.attr || {};
     this.attr.model = attr.model || "nobody";
+    this.mixins(Game.EntityModel.db[this.attr.model].mixins, attr);
 
     if (attr.pos) {
       this.attr.x = attr.pos[0];
@@ -13,34 +16,8 @@ Game.Entity = (function () {
       this.attr.x = attr.x || 0;
       this.attr.y = attr.y || 0;
     }
-
-    this._events = {}
-
-    var mixins = Game.EntityModel.db[this.attr.model].mixins;
-    for (var i in mixins) {
-      var mix = mixins[i];
-
-      for (var key in mix) {
-        if (!mix.hasOwnProperty(key)) continue;
-        if (key === "_meta") continue;
-        this[key] = mix[key];
-      }
-
-      if (mix._meta) {
-        if (mix._meta.init) {
-          mix._meta.init.call(this, attr);
-        }
-
-        if (mix._meta.events) {
-          var events = mix._meta.events;
-          for (var evk in events) {
-            if (!events.hasOwnProperty(evk)) continue;
-            this.listen(evk, events[evk]);
-          }
-        }
-      }
-    }
   }
+  Entity.extend(Game.Mixin);
 
   Entity.prototype.getModel = function () {
     return Game.EntityModel.db[this.attr.model || "nobody"];
@@ -76,19 +53,6 @@ Game.Entity = (function () {
       }
     })(key);
   }
-
-  Entity.prototype.listen = function (ty, f) {
-    this._events[ty] = this._events[ty] || [];
-    this._events[ty].push(f);
-  };
-  Entity.prototype.hear = function (ty) {
-    if (this._events[ty]) {
-      for (var key in this._events[ty]) {
-        this._events[ty][key].apply(this,
-            Array.prototype.slice.call(arguments, 1));
-      }
-    }
-  };
 
   return Entity;
 })();
