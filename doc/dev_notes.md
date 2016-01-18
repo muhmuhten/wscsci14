@@ -7,15 +7,15 @@ Implemented features
 - entity mixin framework
 - avatar
 - player movement
+- limited visibility
 
 Obvious bugs
 
 Next milestone
-
-- visibility
+- time system
+- mobs that move
 
 Planned changes
 
-- mobs that move and attack
 - items
 - ui stack
