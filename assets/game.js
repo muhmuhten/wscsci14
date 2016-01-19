@@ -73,6 +73,8 @@
         },
       },
     },
+
+    EntityMixin: {}
   };
 
   window.onload = function() {
