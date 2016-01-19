@@ -182,7 +182,7 @@ Game.UIMode = (function () {
         this.loop = setInterval(function () {
           Game.state.entities.spam("elapse", 1);
           Game.renderAll();
-        }, 200);
+        }, 50);
       },
       exit: function () {
         clearInterval(this.loop);
@@ -199,7 +199,7 @@ Game.UIMode = (function () {
           d.drawText(1,row++, "avatar x: " + avatar.getX());
           d.drawText(1,row++, "avatar y: " + avatar.getY());
           console.log("wat");
-          d.drawText(1,row++, "turns:    " + avatar.getTurns());
+          d.drawText(1,row++, "turns:    " + (avatar.getTurns()/20|0));
           d.drawText(1,row++, "last key: " + lastKey);
           row++;
           d.drawText(1,row++, "Controls:");
