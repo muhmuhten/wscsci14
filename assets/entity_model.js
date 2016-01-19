@@ -35,7 +35,7 @@ Game.EntityModel = (function () {
     id: "moss",
     chr: '%',
     fg: 'green',
-    mixins: [Mx.Position, Mx.Solid, Mx.Mortal, Mx.TouchToKill]
+    mixins: [Mx.Position, Mx.Solid, Mx.Mortal, Mx.TouchToKill, Mx.Duration, Mx.Walker, Mx.UpGoerFive]
   }));
 
   return Model;

@@ -56,18 +56,18 @@
 
     _displays: {
       main: {
-        frame: { width: 80, height: 24 },
+        frame: { width: 100, height: 32 },
         defaultRender: function (disp) {
           disp.drawText(2,3, "Something unexpected happened. This is bad.");
         },
       },
       avatar: {
-        frame: { width: 20, height: 24 },
+        frame: { width: 28, height: 32 },
         defaultRender: function (disp) {
         },
       },
       message: {
-        frame: { width: 100, height: 6 },
+        frame: { width: 128, height: 6 },
         defaultRender: function (disp) {
           Game.Message.render(disp);
         },

@@ -5,14 +5,18 @@ Game.EntityMixin.Chronicle = (function () {
     _meta: {
       init: function (attr) {
         this.attr.Chronicle = attr.Chronicle || 0;
-        this.listen("time", this.trackTurn);
+      },
+      events: {
+        elapse: function (d) {
+          this.setTurns(this.getTurns() + d);
+        },
       },
     },
     getTurns: function () {
       return this.attr.Chronicle;
     },
-    trackTurn: function () {
-      this.attr.Chronicle++;
-    },
+    setTurns: function (t) {
+      this.attr.Chronicle = t;
+    }
   };
 })();

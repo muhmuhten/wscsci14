@@ -75,7 +75,7 @@ Game.Map = (function () {
     var fov = new ROT.FOV.PreciseShadowcasting(function (x,y) {
       return map.getTile(x,y).canSee() || (x == youX && y == youY);
     });
-    fov.compute(youX, youY, 9, function (x,y,r, vis) {
+    fov.compute(youX, youY, 90, function (x,y,r, vis) {
       var vx = x - offX;
       var vy = y - offY;
       var sym = (lookup[x] && lookup[x][y]) || map.getTile(x,y);

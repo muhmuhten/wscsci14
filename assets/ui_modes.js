@@ -19,13 +19,17 @@ Game.UIMode = (function () {
   function moveAvatar(x,y) {
     return function () {
       var res = Game.state.entities.getAvatar().walk(x,y);
-      if (!res) return;
 
-      switch (res.what) {
+      switch (res && res.what) {
+        case "wall":
+          return;
+
         case "entity":
           res.info.hear("touch", Game.state.entities.getAvatar());
           break;
       }
+
+      Game.state.entities.spam("elapse", 10);
     }
   }
 
@@ -93,7 +97,8 @@ Game.UIMode = (function () {
             tiles[x][y] = "floor";
           }
           else {
-            tiles[x][y] = ROT.RNG.getUniformInt(0,3) ? "wall" : "crystal";
+            //tiles[x][y] = ROT.RNG.getUniformInt(0,3) ? "wall" : "crystal";
+            tiles[x][y] = "floor";
           }
         });
         var rooms = gener.getRooms();
