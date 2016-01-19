@@ -24,7 +24,7 @@ Game.EntityMixin.Duration = (function () {
     elapse: function (d) {
       this.setDelay(this.getDelay() - d);
 
-      while (this.getDelay() <= 0) {
+      while (this.getDelay() < 0) {
         var res = this.act();
         if (res != null) return res;
       }

@@ -51,6 +51,10 @@
       this.renderAll();
     },
 
+    checkMode: function (mode) {
+      return this._uiMode === mode;
+    },
+
     _displays: {
       main: {
         frame: { width: 100, height: 32 },

@@ -17,19 +17,23 @@ Game.UIMode = (function () {
   }
 
   function moveAvatar(x,y) {
-    return function () {
-      var res = Game.state.entities.getAvatar().walk(x,y);
+    return function() {
+      Game.state.entities.getAvatar().nextAction = function () {
+        var res = this.walk(x,y);
 
-      switch (res && res.what) {
-        case "wall":
-          return;
+        switch (res && res.what) {
+          case "wall":
+            return;
 
-        case "entity":
-          res.info.hear("touch", Game.state.entities.getAvatar());
-          break;
+          case "entity":
+            res.info.hear("touch", Game.state.entities.getAvatar());
+            break;
+
+          default:
+            this.delay(5);
+            break;
+        }
       }
-
-      Game.state.entities.spam("elapse", 10);
     }
   }
 
@@ -171,8 +175,16 @@ Game.UIMode = (function () {
     },
 
     play: {
-      enter: noOp,
-      exit: noOp,
+      loop: null,
+      enter: function (d) {
+        this.loop = setInterval(function () {
+          Game.state.entities.spam("elapse", 1);
+          Game.renderAll();
+        }, 200);
+      },
+      exit: function () {
+        clearInterval(this.loop);
+      },
       render: {
         main: function (d) {
           Game.state.map.render(d);
