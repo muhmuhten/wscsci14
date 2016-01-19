@@ -39,10 +39,12 @@ Game.Mixin = (function () {
     this._events[ty].push(f);
   };
   Mixin.prototype.hear = function (ty) {
+    var args = Array.prototype.slice.call(arguments, 1);
     if (this._events[ty]) {
       for (var key in this._events[ty]) {
-        this._events[ty][key].apply(this,
-            Array.prototype.slice.call(arguments, 1));
+        if (!this._events[ty].hasOwnProperty(key)) continue;
+        var res = this._events[ty][key].apply(this, args);
+        if (res != null) return res;
       }
     }
   };

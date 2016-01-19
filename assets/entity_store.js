@@ -48,10 +48,11 @@ Game.EntityStore = (function () {
     }
   };
 
-  Store.prototype.each = function (f) {
+  Store.prototype.spam = function () {
     for (var key in this.all) {
       if (!this.all.hasOwnProperty(key)) continue;
-      f(this.all[key]);
+      var res = this.all[key].hear.apply(this.all[key], arguments);
+      if (res != null) return res;
     }
   };
 

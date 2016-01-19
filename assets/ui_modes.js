@@ -10,10 +10,10 @@ Game.UIMode = (function () {
   function noOp() {}
 
   function chooseRoomTile(room) {
-    return [
-      ROT.RNG.getUniformInt(room.getLeft(), room.getRight()),
-      ROT.RNG.getUniformInt(room.getTop(), room.getBottom())
-    ];
+    return {
+      x: ROT.RNG.getUniformInt(room.getLeft(), room.getRight()),
+      y: ROT.RNG.getUniformInt(room.getTop(), room.getBottom()),
+    };
   }
 
   function moveAvatar(x,y) {
@@ -45,8 +45,6 @@ Game.UIMode = (function () {
         code = String.fromCharCode(code);
         break;
     }
-
-    console.log(code);
 
     var bound = this.keys[code];
     if (bound == null) {
@@ -100,7 +98,7 @@ Game.UIMode = (function () {
         });
         var rooms = gener.getRooms();
         var exit = chooseRoomTile(rooms[rooms.length-1]);
-        tiles[exit[0]][exit[1]] = "exit";
+        tiles[exit.x][exit.y] = "exit";
 
         Game.state = new Game.StateWrapper({
           map: {tiles: tiles},
@@ -110,13 +108,13 @@ Game.UIMode = (function () {
 
         Game.state.entities.add(new Game.Entity({
           model: "avatar",
-          pos: chooseRoomTile(rooms[0]),
+          Position: chooseRoomTile(rooms[0]),
         }));
 
         for (var i = 10; i--;) {
           Game.state.entities.add(new Game.Entity({
             model: "moss",
-            pos: Game.state.map.chooseWalkableTile(),
+            Position: Game.state.map.chooseWalkableTile(),
           }));
         }
 

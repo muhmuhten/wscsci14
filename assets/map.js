@@ -39,7 +39,7 @@ Game.Map = (function () {
       if (!f || f(this.getTile(x,y))) break;
     } while (--tries);
 
-    return [x,y];
+    return {x: x, y: y};
   };
   Map.prototype.chooseWalkableTile = function (tries) {
     return this.chooseTile(function (t) {
@@ -68,13 +68,8 @@ Game.Map = (function () {
       }
     }
 
-    var revent = {};
-    Game.state.entities.each(function (ent) {
-      var x = ent.getX();
-      var y = ent.getY();
-      revent[x] = revent[x] || {};
-      revent[x][y] = ent;
-    });
+    var lookup = {};
+    Game.state.entities.spam("locate", lookup);
 
     var map = this;
     var fov = new ROT.FOV.PreciseShadowcasting(function (x,y) {
@@ -83,7 +78,7 @@ Game.Map = (function () {
     fov.compute(youX, youY, 9, function (x,y,r, vis) {
       var vx = x - offX;
       var vy = y - offY;
-      var sym = (revent[x] && revent[x][y]) || map.getTile(x,y);
+      var sym = (lookup[x] && lookup[x][y]) || map.getTile(x,y);
       map.setKnown(x,y, sym.getChr());
       sym.render(disp, vx,vy, vis);
     });

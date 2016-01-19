@@ -1,6 +1,6 @@
 Game.EntityMixin.Walker = (function () {
   "use strict";
-  
+
   return {
     _meta: {
       init: function () {
@@ -15,14 +15,9 @@ Game.EntityMixin.Walker = (function () {
         return {what: "wall"};
       }
 
-      // XXX still stupid inefficient, violates encapsulation
-      for (var key in Game.state.entities.all) {
-        if (!Game.state.entities.all.hasOwnProperty(key)) continue;
-
-        var e = Game.state.entities.all[key];
-        if (e.getX() === newX && e.getY() === newY) {
-          return {what: "entity", info: e};
-        }
+      var ent = Game.state.entities.spam("collision", newX, newY);
+      if (ent) {
+        return {what: "entity", info: ent};
       }
 
       this.move(x,y);

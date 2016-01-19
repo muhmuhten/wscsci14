@@ -1,7 +1,7 @@
 Game.EntityModel = (function () {
   "use strict";
 
-  var Mixin = Game.EntityMixin;
+  var Mx = Game.EntityMixin;
 
   function Model(attr) {
     Game.Symbol.call(this, attr);
@@ -28,14 +28,14 @@ Game.EntityModel = (function () {
     id: "avatar",
     chr: '@',
     fg: "magenta",
-    mixins: [Mixin.Timekeeper, Mixin.Walker, Mixin.Chronicle, Mixin.ColourChanging]
+    mixins: [Mx.Position, Mx.Solid, Mx.Timekeeper, Mx.Walker, Mx.Chronicle, Mx.ColourChanging]
   }));
 
   Model.register(new Model({
     id: "moss",
     chr: '%',
     fg: 'green',
-    mixins: [Mixin.ColourChanging, Mixin.Mortal, Mixin.TouchToKill]
+    mixins: [Mx.Position, Mx.Solid, Mx.Mortal, Mx.TouchToKill]
   }));
 
   return Model;

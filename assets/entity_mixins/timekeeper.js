@@ -5,9 +5,7 @@ Game.EntityMixin.Timekeeper = (function () {
     _meta: {
       events: {
         move: function () {
-          Game.state.entities.each(function (e) {
-            e.hear("time");
-          });
+          Game.state.entities.spam("time");
         },
       },
     },
