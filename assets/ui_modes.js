@@ -37,6 +37,7 @@ Game.UIMode = (function () {
     }
   }
 
+  var lastKey = ' ';
   function keybindHandler(ty, ev) {
     Game.Message.decay();
 
@@ -53,6 +54,7 @@ Game.UIMode = (function () {
         code = String.fromCharCode(code);
         break;
     }
+    lastKey = code;
 
     var bound = this.keys[code];
     if (bound == null) {
@@ -196,7 +198,9 @@ Game.UIMode = (function () {
           row++;
           d.drawText(1,row++, "avatar x: " + avatar.getX());
           d.drawText(1,row++, "avatar y: " + avatar.getY());
+          console.log("wat");
           d.drawText(1,row++, "turns:    " + avatar.getTurns());
+          d.drawText(1,row++, "last key: " + lastKey);
           row++;
           d.drawText(1,row++, "Controls:");
           d.drawText(1,row++, "[<] win, if on <");
