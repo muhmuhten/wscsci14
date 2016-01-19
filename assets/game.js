@@ -21,11 +21,11 @@
     },
 
     renderAll: function () {
-      var self = this;
+      if (this._uiMode == null) return;
+      var mode = this.UIMode[this._uiMode];
       this.eachDisplay(function (key, disp) {
         disp.obj.clear();
-        ((self._uiMode && self._uiMode.render && self._uiMode.render[key])
-         || disp.defaultRender)(disp.obj);
+        ((mode.render && mode.render[key]) || disp.defaultRender)(disp.obj);
       });
     },
 
@@ -34,23 +34,20 @@
     },
 
     handleEvent: function (ty, ev) {
-      if (this._uiMode == null || this._uiMode.handleInput == null) return;
-      this._uiMode.handleInput(ty, ev);
+      if (this._uiMode == null) return;
+      var mode = this.UIMode[this._uiMode];
+      if (mode.handleInput == null) return;
+      mode.handleInput(ty, ev);
       this.renderAll();
     },
 
-    switchMode: function (key) {
-      var mode = Game.UIMode[key];
-      if (mode == null) {
-        Game.Message.warn("Switched to bad mode '" + key + "'");
+    switchMode: function (mode) {
+      if (this._uiMode != null) this.UIMode[this._uiMode].exit();
+      if (Game.UIMode[mode] == null) {
+        Game.Message.warn("Switched to bad mode '" + mode + "'");
       }
-      this._switchMode(mode);
-    },
-
-    _switchMode: function (mode) {
-      if (this._uiMode != null) this._uiMode.exit();
       this._uiMode = mode;
-      if (this._uiMode != null) this._uiMode.enter();
+      if (this._uiMode != null) this.UIMode[this._uiMode].enter();
       this.renderAll();
     },
 
