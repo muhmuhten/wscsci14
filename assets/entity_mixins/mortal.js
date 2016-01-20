@@ -9,10 +9,10 @@ Game.EntityMixin.Mortal = (function () {
       }
 
       if (killer.getModel().getId() === "avatar") {
-        Game.Message.send("You kill it.");
+        Game.Message.send("You kill the " + this.getModel().getName() + ".");
       }
       else {
-        Game.Message.send("It dies.");
+        Game.Message.send("The " + this.getModel().getName() + " dies.");
       }
     },
   };

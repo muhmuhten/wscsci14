@@ -46,7 +46,7 @@ Game.EntityModel = (function () {
 
   Model.register(new Model({
     id: "bee",
-    chr: '6',
+    chr: 'B',
     fg: "yellow",
     mixins: [
       Mx.Duration,
