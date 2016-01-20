@@ -30,7 +30,7 @@ Game.UIMode = (function () {
             break;
 
           default:
-            this.delay(5);
+            this.delay(1);
             break;
         }
       }
@@ -198,7 +198,6 @@ Game.UIMode = (function () {
           row++;
           d.drawText(1,row++, "avatar x: " + avatar.getX());
           d.drawText(1,row++, "avatar y: " + avatar.getY());
-          console.log("wat");
           d.drawText(1,row++, "turns:    " + (avatar.getTurns()/20|0));
           d.drawText(1,row++, "last key: " + lastKey);
           row++;
@@ -229,24 +228,24 @@ Game.UIMode = (function () {
           }
         },
 
-        1: moveAvatar(-1,1),
-        2: moveAvatar(0,1),
-        3: moveAvatar(1,1),
-        4: moveAvatar(-1,0),
+        1: moveAvatar(-1/2,1/2),
+        2: moveAvatar(0,1/2),
+        3: moveAvatar(1/2,1/2),
+        4: moveAvatar(-1/2,0),
         5: noOp,
-        6: moveAvatar(1,0),
-        7: moveAvatar(-1,-1),
-        8: moveAvatar(0,-1),
-        9: moveAvatar(1,-1),
+        6: moveAvatar(1/2,0),
+        7: moveAvatar(-1/2,-1/2),
+        8: moveAvatar(0,-1/2),
+        9: moveAvatar(1/2,-1/2),
 
-        h: moveAvatar(-1,0),
-        j: moveAvatar(0,1),
-        k: moveAvatar(0,-1),
-        l: moveAvatar(1,0),
-        y: moveAvatar(-1,-1),
-        u: moveAvatar(1,-1),
-        b: moveAvatar(-1,1),
-        n: moveAvatar(1,1),
+        h: moveAvatar(-1/2,0),
+        j: moveAvatar(0,1/2),
+        k: moveAvatar(0,-1/2),
+        l: moveAvatar(1/2,0),
+        y: moveAvatar(-1/2,-1/2),
+        u: moveAvatar(1/2,-1/2),
+        b: moveAvatar(-1/2,1/2),
+        n: moveAvatar(1/2,1/2),
       },
     },
 

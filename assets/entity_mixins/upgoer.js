@@ -3,8 +3,8 @@ Game.EntityMixin.UpGoerFive = (function () {
 
   return {
     act: function () {
-      this.walk(0,-1);
-      this.delay(5);
+      this.walk(0,-1/4);
+      this.delay(1);
     },
   };
 })();

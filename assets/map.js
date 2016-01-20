@@ -52,11 +52,11 @@ Game.Map = (function () {
     var dispY = disp.getOptions().height;
 
     var avatar = Game.state.entities.getAvatar();
-    var youX = avatar.getX();
-    var youY = avatar.getY();
+    var youX = avatar.intX();
+    var youY = avatar.intY();
 
-    var offX = youX - (dispX/2) |0;
-    var offY = youY - (dispY/2) |0;
+    var offX = (youX - (dispX/2) & ~31) + 16;
+    var offY = (youY - (dispY/2) & ~15) + 8;
 
     for (var vx = 0; vx < dispX; vx++) {
       for (var vy = 0; vy < dispY; vy++) {
@@ -78,9 +78,14 @@ Game.Map = (function () {
     fov.compute(youX, youY, 90, function (x,y,r, vis) {
       var vx = x - offX;
       var vy = y - offY;
-      var sym = (lookup[x] && lookup[x][y]) || map.getTile(x,y);
+      var sym = map.getTile(x,y);
       map.setKnown(x,y, sym.getChr());
       sym.render(disp, vx,vy, vis);
+
+      if (lookup[x] && lookup[x][y]) {
+        var ent = lookup[x][y];
+        ent.getModel().render(disp, ent.getX()-offX, ent.getY()-offY, vis);
+      }
     });
   };
 
