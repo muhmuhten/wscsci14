@@ -36,14 +36,17 @@ Game.Map = (function () {
       x = ROT.RNG.getUniformInt(0, this.getWidth()-1);
       y = ROT.RNG.getUniformInt(0, this.getHeight()-1);
 
-      if (!f || f(this.getTile(x,y))) break;
+      if (!f || f(this.getTile(x,y), x, y)) break;
     } while (--tries);
 
     return {x: x, y: y};
   };
   Map.prototype.chooseWalkableTile = function (tries) {
-    return this.chooseTile(function (t) {
-      return t.canWalk();
+    var lookup = {};
+    Game.state.entities.spam("locate", lookup);
+
+    return this.chooseTile(function (t, x,y) {
+      return t.canWalk() && !(lookup[x] || {})[y];
     }, tries);
   };
 
@@ -73,7 +76,7 @@ Game.Map = (function () {
         var y = vy + offY;
         var k = this.getKnown(x,y);
         if (!k) continue;
-        new Game.Symbol({chr: k}).render(disp, vx,vy, false);
+        new Game.Symbol({chr: k}).render(disp, vx,vy);
       }
     }
 
@@ -84,16 +87,24 @@ Game.Map = (function () {
     var fov = new ROT.FOV.PreciseShadowcasting(function (x,y) {
       return map.getTile(x,y).canSee() || (x == youX && y == youY);
     });
-    fov.compute(youX, youY, 90, function (x,y,r, vis) {
-      var vx = x - offX;
-      var vy = y - offY;
+    fov.compute(youX, youY, 90, function (x,y,r) {
+      var vx = x - offX, vy = y - offY;
       var sym = map.getTile(x,y);
       map.setKnown(x,y, sym.getChr());
-      sym.render(disp, vx,vy, vis);
+      sym.render(disp, vx,vy);
 
       if (lookup[x] && lookup[x][y]) {
-        var ent = lookup[x][y];
-        ent.getModel().render(disp, ent.getX()-offX, ent.getY()-offY, vis);
+        lookup[x][y].sort(function (a,b) {
+          return a.getPriority() - b.getPriority();
+        });
+        var ent = lookup[x][y][0];
+        var vx = ent.getX() - offX, vy = ent.getY() - offY;
+        if (lookup[x][y].length > 1) {
+          ent.getModel().render(disp, vx,vy, null, lookup[x][y][1].getFg());
+        }
+        else {
+          ent.getModel().render(disp, vx,vy);
+        }
       }
     });
   };

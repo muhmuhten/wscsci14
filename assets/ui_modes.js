@@ -123,6 +123,15 @@ Game.UIMode = (function () {
           }));
         }
 
+        for (var i = 10; i--;) {
+          Game.state.entities.add(new Game.Entity({
+            model: "candy",
+            Position: Game.state.map.chooseWalkableTile(),
+          }));
+        }
+
+        Game.initMode("play");
+
         Game.initMode("play");
       },
     },

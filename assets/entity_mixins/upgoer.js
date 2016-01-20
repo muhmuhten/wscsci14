@@ -12,8 +12,6 @@ Game.EntityMixin.UpGoerFive = (function () {
 
       var x = 0, y = 0;
 
-      if (rand() < 0.5) x = dx / Math.abs(dx);
-      if (rand() < 0.5) y = dx / Math.abs(dy);
       if (rand() < 0.5) x = rand() < 0.5 ? 1 : -1;
       if (rand() < 0.5) y = rand() < 0.5 ? 1 : -1;
 

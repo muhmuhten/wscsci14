@@ -10,9 +10,10 @@ Game.EntityMixin.Position = (function () {
       },
       events: {
         locate: function (lookup) {
-          var x = this.intX();
+          var x = this.intX(), y = this.intY();
           lookup[x] = lookup[x] || {};
-          lookup[x][this.intY()] = this;
+          lookup[x][y] = lookup[x][y] || [];
+          lookup[x][y].push(this);
         },
       },
     },

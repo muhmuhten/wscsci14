@@ -14,6 +14,10 @@ Game.Entity = (function () {
     return Game.EntityModel.db[this.attr.model || "nobody"];
   };
 
+  Entity.prototype.getPriority = function () {
+    return 0;
+  };
+
   for (var key in Game.Symbol.prototype) {
     if (!Game.Symbol.prototype.hasOwnProperty(key)) continue;
     Entity.prototype[key] = (function (k) {

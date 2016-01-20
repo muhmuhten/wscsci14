@@ -18,13 +18,8 @@ Game.Symbol = (function () {
     return this.bg;
   }
 
-  Symbol.prototype.render = function (d, x,y, vis) {
-    if (vis) {
-      d.draw(x,y, this.getChr(), this.getFg(), this.getBg());
-    }
-    else {
-      d.draw(x,y, this.getChr());
-    }
+  Symbol.prototype.render = function (d, x,y, fg, bg) {
+    d.draw(x,y, this.getChr(), fg || this.getFg(), bg || this.getBg());
   };
 
   return Symbol;

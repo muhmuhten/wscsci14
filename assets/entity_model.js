@@ -28,14 +28,40 @@ Game.EntityModel = (function () {
     id: "avatar",
     chr: '@',
     fg: "magenta",
-    mixins: [Mx.Position, Mx.Solid, Mx.Walker, Mx.Chronicle, Mx.Duration, Mx.Walker, Mx.Avatar, Mx.TouchToKill]
+    mixins: [
+      Mx.Avatar,
+      Mx.Chronicle,
+      Mx.Duration,
+      Mx.Position,
+      Mx.Solid,
+      Mx.TouchToKill,
+      Mx.Walker,
+    ]
   }));
 
   Model.register(new Model({
     id: "moss",
     chr: '%',
-    fg: 'green',
-    mixins: [Mx.Position, Mx.Solid, Mx.Mortal, Mx.TouchToKill, Mx.Duration, Mx.Walker, Mx.UpGoerFive]
+    fg: "green",
+    mixins: [
+      Mx.Duration,
+      Mx.Mortal,
+      Mx.Position,
+      Mx.Solid,
+      Mx.TouchToKill,
+      Mx.UpGoerFive,
+      Mx.Walker,
+    ]
+  }));
+
+  Model.register(new Model({
+    id: "candy",
+    chr: '!',
+    fg: "red",
+    mixins: [
+      Mx.Item,
+      Mx.Position,
+    ]
   }));
 
   return Model;
