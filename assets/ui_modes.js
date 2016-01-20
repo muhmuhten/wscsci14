@@ -28,7 +28,7 @@ Game.UIMode = (function () {
             this.delay(1);
             break;
         }
-      }
+      };
     }
   }
 
@@ -239,6 +239,52 @@ Game.UIMode = (function () {
         u: moveAvatar(1,-1),
         b: moveAvatar(-1,1),
         n: moveAvatar(1,1),
+
+        g: function () { Game.pushMode("pickup"); },
+      },
+    },
+
+    pickup: {
+      items: null,
+      enter: function () {
+        var avatar = Game.state.entities.getAvatar();
+        var items = this.items = [];
+        Game.state.entities.spam("loot", items, avatar);
+
+        this.keys = {
+          Down13: function () {
+            avatar.nextAction = function () {
+              for (var i = 0; i < items.length; i++) {
+                if (!items[i].want) continue;
+                items[i].item.pickup(this);
+                this.delay(1);
+              }
+            };
+            Game.popMode();
+          },
+          Down27: function () {
+            Game.popMode();
+          },
+        };
+
+        for (var i = 1; i <= items.length; i++) {
+          this.keys[i] = (function (j) {
+            return function () {
+              items[j].want = !items[j].want;
+            };
+          })(i-1);
+        }
+      },
+      handleInput: keybindHandler,
+      render: {
+        main: function (d) {
+          for (var i = 1; i <= this.items.length; i++) {
+            var it = this.items[i-1];
+            d.drawText(3,i, ""+i);
+            d.drawText(6,i, it.want ? "+" : "-");
+            d.drawText(8,i, it.item.getModel().getId());
+          }
+        },
       },
     },
 

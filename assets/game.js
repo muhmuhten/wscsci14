@@ -28,7 +28,7 @@
         for (var i = 0; i < this._ui.length; i++) {
           var mode = Game.UIMode[this._ui[i]];
           if (mode.render && mode.render[key]) {
-            mode.render[key](disp);
+            mode.render[key].call(mode, disp);
           }
         }
       }
@@ -87,7 +87,7 @@
 
     Game.init();
 
-    ["avatar", "main", "message"].forEach(function (key) {
+    ["main", "avatar", "message"].forEach(function (key) {
       var div = document.createElement("div");
       div.id = "wsrl-display-" + key;
       div.classList.add("wsrl-display");

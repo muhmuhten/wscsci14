@@ -32,6 +32,7 @@ Game.EntityModel = (function () {
       Mx.Avatar,
       Mx.Chronicle,
       Mx.Duration,
+      Mx.Inventory,
       Mx.Position,
       Mx.Solid,
       Mx.TouchToKill,
