@@ -50,11 +50,9 @@ Game.Tile = (function () {
   Tile.register(new Tile({
     id: "crystal",
     chr: '#',
+    fg: "cyan",
     seethrough: true
   }));
-  Tile.db.crystal.getFg = function () {
-    return ROT.Color.toHex(ROT.Color.randomize([100,100,100], [100,100,100]));
-  };
 
   return Tile;
 })();

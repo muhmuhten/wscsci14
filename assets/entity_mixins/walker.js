@@ -8,11 +8,11 @@ Game.EntityMixin.Walker = (function () {
     },
 
     walk: function (x,y) {
-      var q = this.getPos();
-      var p = {x: q.x+x, y: q.y+y};
+      var nux = this.getX() + x;
+      var nuy = this.getY() + y;
 
-      var fx = Math.floor(p.x), cx = Math.ceil(p.x);
-      var fy = Math.floor(p.y), cy = Math.ceil(p.y);
+      var fx = Math.floor(nux), cx = Math.ceil(nux);
+      var fy = Math.floor(nuy), cy = Math.ceil(nuy);
 
       if (!Game.state.map.getTile(fx, fy).canWalk()
           || !Game.state.map.getTile(fx, cy).canWalk()
@@ -21,7 +21,7 @@ Game.EntityMixin.Walker = (function () {
         return {what: "wall"};
       }
 
-      var ent = Game.state.entities.spam("collision", p, q);
+      var ent = Game.state.entities.spam("collision", this, nux, nuy);
       if (ent) {
         return {what: "entity", info: ent};
       }

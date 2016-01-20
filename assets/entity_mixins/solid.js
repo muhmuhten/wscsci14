@@ -4,12 +4,14 @@ Game.EntityMixin.Solid = (function () {
   return {
     _meta: {
       events: {
-        collision: function (p, q) {
-          var s = this.getPos();
-          if (q.x === s.x && q.x === s.x) return; // same entity
+        collision: function (e, x, y) {
+          if (e.getX() === this.getX() && e.getY() === this.getY()) return;
 
-          var d = Math.pow(p.x-s.x, 2) + Math.pow(p.y-s.y, 2);
-          if (d < 1) return this;
+          var dist = Math.pow(x-this.getX(), 2) + Math.pow(y-this.getY(), 2);
+          if (dist < 1) {
+            this.hear("touch", e);
+            return this;
+          }
         },
       },
     },

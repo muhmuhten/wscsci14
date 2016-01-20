@@ -55,8 +55,17 @@ Game.Map = (function () {
     var youX = avatar.intX();
     var youY = avatar.intY();
 
-    var offX = (youX - (dispX/2) & ~31) + 16;
-    var offY = (youY - (dispY/2) & ~15) + 8;
+    var offX = youX - dispX/2;
+    this.offX = this.offX || offX;
+    while (this.offX > offX + 8) this.offX -= 4;
+    while (this.offX < offX - 8) this.offX += 4;
+    offX = this.offX |= 0;
+
+    var offY = youY - dispY/2;
+    this.offY = this.offY || offY;
+    while (this.offY > offY + 8) this.offY -= 4;
+    while (this.offY < offY - 8) this.offY += 4;
+    offY = this.offY |= 0;
 
     for (var vx = 0; vx < dispX; vx++) {
       for (var vy = 0; vy < dispY; vy++) {

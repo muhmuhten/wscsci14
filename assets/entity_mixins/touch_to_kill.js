@@ -5,9 +5,7 @@ Game.EntityMixin.TouchToKill = (function () {
     _meta: {
       events: {
         touch: function (by) {
-          if (by.getModel().getId() === "avatar") {
-            this.kill();
-          }
+          this.kill(by);
         },
       },
     },

@@ -23,10 +23,7 @@ Game.UIMode = (function () {
 
         switch (res && res.what) {
           case "wall":
-            return;
-
           case "entity":
-            res.info.hear("touch", Game.state.entities.getAvatar());
             break;
 
           default:
@@ -103,8 +100,8 @@ Game.UIMode = (function () {
             tiles[x][y] = "floor";
           }
           else {
-            //tiles[x][y] = ROT.RNG.getUniformInt(0,3) ? "wall" : "crystal";
             tiles[x][y] = "floor";
+            tiles[x][y] = ROT.RNG.getUniformInt(0,3) ? "crystal" : "wall";
           }
         });
         var rooms = gener.getRooms();
@@ -217,9 +214,9 @@ Game.UIMode = (function () {
         Down27: "lose",
         s: "menu",
 
-        "<": function () {
+        '<': function () {
           var avatar = Game.state.entities.getAvatar();
-          var tile = Game.state.map.getTile(avatar.getX(), avatar.getY());
+          var tile = Game.state.map.getTile(avatar.intX(), avatar.intY());
           if (tile.getId() === "exit") {
             Game.switchMode("win");
           }
@@ -228,24 +225,24 @@ Game.UIMode = (function () {
           }
         },
 
-        1: moveAvatar(-1/2,1/2),
-        2: moveAvatar(0,1/2),
-        3: moveAvatar(1/2,1/2),
-        4: moveAvatar(-1/2,0),
+        1: moveAvatar(-1,1),
+        2: moveAvatar(0,1),
+        3: moveAvatar(1,1),
+        4: moveAvatar(-1,0),
         5: noOp,
-        6: moveAvatar(1/2,0),
-        7: moveAvatar(-1/2,-1/2),
-        8: moveAvatar(0,-1/2),
-        9: moveAvatar(1/2,-1/2),
+        6: moveAvatar(1,0),
+        7: moveAvatar(-1,-1),
+        8: moveAvatar(0,-1),
+        9: moveAvatar(1,-1),
 
-        h: moveAvatar(-1/2,0),
-        j: moveAvatar(0,1/2),
-        k: moveAvatar(0,-1/2),
-        l: moveAvatar(1/2,0),
-        y: moveAvatar(-1/2,-1/2),
-        u: moveAvatar(1/2,-1/2),
-        b: moveAvatar(-1/2,1/2),
-        n: moveAvatar(1/2,1/2),
+        h: moveAvatar(-1,0),
+        j: moveAvatar(0,1),
+        k: moveAvatar(0,-1),
+        l: moveAvatar(1,0),
+        y: moveAvatar(-1,-1),
+        u: moveAvatar(1,-1),
+        b: moveAvatar(-1,1),
+        n: moveAvatar(1,1),
       },
     },
 
