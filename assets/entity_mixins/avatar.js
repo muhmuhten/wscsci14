@@ -13,7 +13,7 @@ Game.EntityMixin.Avatar = (function () {
 
     kill: function () {
       Game.Message.send("You die...");
-      Game.switchMode("lose");
+      Game.initMode("lose");
     },
   };
 })();

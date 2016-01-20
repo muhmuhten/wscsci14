@@ -2,12 +2,10 @@ Game.UIMode = (function () {
   "use strict";
 
   function checkLocalStorage() {
-    if (window.localStorage) return true;
+    if (window.localStorage) return localStorage;
     Game.Message.warn("Local storage not available.");
     return false;
   }
-
-  function noOp() {}
 
   function chooseRoomTile(room) {
     return {
@@ -54,22 +52,21 @@ Game.UIMode = (function () {
     lastKey = code;
 
     var bound = this.keys[code];
-    if (bound == null) {
-    }
-    else if (typeof bound === "string") {
-      Game.switchMode(bound);
-    }
-    else { // assume function, can expand
-      bound(ty, ev);
-    }
+    if (bound != null) return bound(ty, ev);
   }
 
   var UIMode = {
     STORE_KEY: "6b8b78f9bf0bec2540201010245841c71cd7c1b5297bf2a051fb0373",
 
+    "": {
+      render: {
+        message: function (d) {
+          Game.Message.render(d);
+        },
+      },
+    },
+
     menu: {
-      enter: noOp,
-      exit: noOp,
       render: {
         main: function (d) {
           d.drawText(1,1, "Press:");
@@ -83,9 +80,9 @@ Game.UIMode = (function () {
       },
       handleInput: keybindHandler,
       keys: {
-        n: "newGame",
-        l: "load",
-        s: "save",
+        n: function () { Game.initMode("newGame"); },
+        l: function () { Game.initMode("load"); },
+        s: function () { Game.initMode("save"); },
       },
     },
 
@@ -126,51 +123,43 @@ Game.UIMode = (function () {
           }));
         }
 
-        Game.switchMode("play");
+        Game.initMode("play");
       },
-      exit: noOp,
-      handleInput: noOp,
     },
     load: {
       enter: function () {
         if (!checkLocalStorage()) {
-          Game.switchMode("newGame");
+          Game.initMode("newGame");
           return;
         }
 
         var state = localStorage.getItem(UIMode.STORE_KEY);
         if (state == null) {
           Game.Message.warn("No saved game found.");
-          Game.switchMode("newGame");
+          Game.initMode("newGame");
           return;
         }
 
         Game.state = new Game.StateWrapper(JSON.parse(state));
         Game.Message.send("Welcome back! Try not to die.");
-        Game.switchMode("play");
+        Game.initMode("play");
       },
-      exit: noOp,
-      handleInput: noOp,
     },
     save: {
       enter: function () {
-        if (!checkLocalStorage()) {
-          Game.switchMode("menu");
-          return;
-        }
-
         if (Game.state == null) {
           Game.Message.warn("No game to save.");
-          Game.switchMode("menu");
+          Game.initMode("menu");
           return;
         }
 
-        localStorage.clear();
-        localStorage.setItem(UIMode.STORE_KEY, JSON.stringify(Game.state));
-        Game.switchMode("play");
+        if (checkLocalStorage()) {
+          localStorage.clear();
+          localStorage.setItem(UIMode.STORE_KEY, JSON.stringify(Game.state));
+        }
+
+        Game.popMode();
       },
-      exit: noOp,
-      handleInput: noOp,
     },
 
     play: {
@@ -179,7 +168,7 @@ Game.UIMode = (function () {
         this.loop = setInterval(function () {
           Game.state.entities.spam("elapse", 1);
           Game.renderAll();
-        }, 50);
+        }, 100);
       },
       exit: function () {
         clearInterval(this.loop);
@@ -195,7 +184,7 @@ Game.UIMode = (function () {
           row++;
           d.drawText(1,row++, "avatar x: " + avatar.getX());
           d.drawText(1,row++, "avatar y: " + avatar.getY());
-          d.drawText(1,row++, "turns:    " + (avatar.getTurns()/20|0));
+          d.drawText(1,row++, "turns:    " + (avatar.getTurns()/10|0));
           d.drawText(1,row++, "last key: " + lastKey);
           row++;
           d.drawText(1,row++, "Controls:");
@@ -211,14 +200,13 @@ Game.UIMode = (function () {
       },
       handleInput: keybindHandler,
       keys: {
-        Down27: "lose",
-        s: "menu",
-
+        '=': function () { Game.initMode("menu"); },
+        Down27: function () { Game.initMode("lose"); },
         '<': function () {
           var avatar = Game.state.entities.getAvatar();
           var tile = Game.state.map.getTile(avatar.intX(), avatar.intY());
           if (tile.getId() === "exit") {
-            Game.switchMode("win");
+            Game.initMode("win");
           }
           else {
             Game.Message.send("You can't go up here.");
@@ -229,7 +217,6 @@ Game.UIMode = (function () {
         2: moveAvatar(0,1),
         3: moveAvatar(1,1),
         4: moveAvatar(-1,0),
-        5: noOp,
         6: moveAvatar(1,0),
         7: moveAvatar(-1,-1),
         8: moveAvatar(0,-1),
@@ -247,23 +234,37 @@ Game.UIMode = (function () {
     },
 
     win: {
-      enter: noOp,
-      exit: noOp,
+      lock: false,
+      enter: function () {
+        this.lock = true;
+        setTimeout(function () { this.lock = false; }.bind(this), 1000);
+      },
+      handleInput: function (s) {
+        if (this.lock) return;
+        Game.initMode("menu");
+      },
       render: {
         main: function (d) {
           d.drawText(1,1, "CONGATULATION!!! YOU ARE SINNER!!!!");
         },
-      }
+      },
     },
 
     lose: {
-      enter: noOp,
-      exit: noOp,
+      lock: false,
+      enter: function () {
+        this.lock = true;
+        setTimeout(function () { this.lock = false; }.bind(this), 1000);
+      },
+      handleInput: function (s) {
+        if (this.lock) return;
+        Game.initMode("menu");
+      },
       render: {
         main: function (d) {
           d.drawText(1,1, "whoops you lost the game");
         },
-      }
+      },
     },
   };
 

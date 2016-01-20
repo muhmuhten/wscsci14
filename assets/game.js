@@ -3,79 +3,78 @@
 
   window.Game = {
     init: function () {
-      console.log("WSRL Live Initialization");
-
-      this.eachDisplay(function (key, disp) {
-        disp.obj = new ROT.Display(disp.frame);
-      });
-
-      this.renderAll();
+      for (var key in this._displays) {
+        if (!this._displays.hasOwnProperty(key)) continue;
+        this._displays[key] = new ROT.Display(this._displays[key]);
+      }
     },
 
-    eachDisplay: function (f) {
+    getDisplay: function (key) {
+      return this._displays[key];
+    },
+
+    _displays: {
+      main: { width: 100, height: 32 },
+      avatar: { width: 28, height: 32 },
+      message: { width: 128, height: 6 },
+    },
+
+    renderAll: function () {
       for (var key in this._displays) {
-        if (this._displays.hasOwnProperty(key)) {
-          f.call(self, key, this._displays[key]);
+        if (!this._displays.hasOwnProperty(key)) continue;
+        var disp = this.getDisplay(key);
+        disp.clear();
+
+        for (var i = 0; i < this._ui.length; i++) {
+          var mode = Game.UIMode[this._ui[i]];
+          if (mode.render && mode.render[key]) {
+            mode.render[key](disp);
+          }
         }
       }
     },
 
-    renderAll: function () {
-      if (this._uiMode == null) return;
-      var mode = this.UIMode[this._uiMode];
-      this.eachDisplay(function (key, disp) {
-        disp.obj.clear();
-        ((mode.render && mode.render[key]) || disp.defaultRender)(disp.obj);
-      });
-    },
-
-    getDisplay: function (displayName) {
-      return this._displays[displayName].obj;
-    },
-
     handleEvent: function (ty, ev) {
-      if (this._uiMode == null) return;
-      var mode = this.UIMode[this._uiMode];
-      if (mode.handleInput == null) return;
-      mode.handleInput(ty, ev);
-      this.renderAll();
-    },
-
-    switchMode: function (mode) {
-      if (this._uiMode != null) this.UIMode[this._uiMode].exit();
-      if (Game.UIMode[mode] == null) {
-        Game.Message.warn("Switched to bad mode '" + mode + "'");
+      for (var i = this._ui.length-1; i >= 0; i--) {
+        var mode = Game.UIMode[this._ui[i]];
+        if (mode.handleInput == null) continue;
+        mode.handleInput(ty, ev);
+        this.renderAll();
+        return;
       }
-      this._uiMode = mode;
-      if (this._uiMode != null) this.UIMode[this._uiMode].enter();
+    },
+
+    pushMode: function (name) {
+      var mode = Game.UIMode[name];
+      if (mode == null) {
+        Game.Message.warn("Pushed bad mode '" + name + "'");
+      }
+
+      this._ui.push(name);
+      if (mode.enter) mode.enter();
       this.renderAll();
     },
-
-    checkMode: function (mode) {
-      return this._uiMode === mode;
+    popMode: function () { 
+      var name = this._ui.pop();
+      var mode = Game.UIMode[name];
+      if (mode && mode.exit) mode.exit();
+      this.renderAll();
+      return name;
+    },
+    replaceMode: function (name) {
+      var last = this.popMode();
+      this.pushMode(name);
+      return last;
+    },
+    initMode: function (name) {
+      while (this.popMode() != null);
+      this._ui = [""];
+      this.pushMode(name);
     },
 
-    _displays: {
-      main: {
-        frame: { width: 100, height: 32 },
-        defaultRender: function (disp) {
-          disp.drawText(2,3, "Something unexpected happened. This is bad.");
-        },
-      },
-      avatar: {
-        frame: { width: 28, height: 32 },
-        defaultRender: function (disp) {
-        },
-      },
-      message: {
-        frame: { width: 128, height: 6 },
-        defaultRender: function (disp) {
-          Game.Message.render(disp);
-        },
-      },
-    },
+    _ui: [],
 
-    EntityMixin: {}
+    EntityMixin: {},
   };
 
   window.onload = function() {
@@ -102,6 +101,6 @@
       });
     });
 
-    Game.switchMode("menu");
+    Game.initMode("menu");
   };
 })();
