@@ -3,8 +3,9 @@ Game.EntityMixin.Mortal = (function () {
 
   return {
     kill: function (killer) {
-      if (this.storeKey) {
-        Game.state.entities.remove(this.storeKey);
+      var key = this.getStoreKey();
+      if (key != null) {
+        Game.state.entities.remove(key);
       }
 
       if (killer.getModel().getId() === "avatar") {

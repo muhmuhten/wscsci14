@@ -3,7 +3,7 @@ Game.EntityStore = (function () {
 
   function Store(attr) {
     this.avatar = 0;
-    this.next = 0;
+    this.last = 0;
     this.all = {};
 
     for (var i in attr) {
@@ -20,16 +20,20 @@ Game.EntityStore = (function () {
   }
 
   Store.prototype.add = function (e) {
-    if (e.storeKey == null) {
-      e.storeKey = this.next++;
-      this.all[e.storeKey] = e;
+    if (e.attr.storeKey == null) {
+      e.attr.storeKey = ++this.last;
     }
+    else {
+      this.last = Math.max(e.attr.storeKey, this.last);
+    }
+
+    this.all[e.attr.storeKey] = e;
 
     if (e.getModel().getId() === "avatar") {
-      this.avatar = e.storeKey;
+      this.avatar = e.attr.storeKey;
     }
 
-    return e.storeKey;
+    return e.attr.storeKey;
   };
   Store.prototype.get = function (n) {
     return this.all[n];

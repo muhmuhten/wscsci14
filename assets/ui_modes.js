@@ -167,7 +167,7 @@ Game.UIMode = (function () {
           localStorage.setItem(UIMode.STORE_KEY, JSON.stringify(Game.state));
         }
 
-        Game.popMode();
+        Game.initMode("play");
       },
     },
 
@@ -241,22 +241,44 @@ Game.UIMode = (function () {
         n: moveAvatar(1,1),
 
         g: function () { Game.pushMode("pickup"); },
+        i: function () { Game.pushMode("inventory"); },
+      },
+    },
+
+    inventory: {
+      render: {
+        main: function (d) {
+          var items = Game.state.entities.getAvatar().getItems();
+          for (var i = 1; i <= items.length; i++) {
+            d.drawText(3,i, ""+i);
+            d.drawText(6,i, "-");
+            d.drawText(8,i, items[i-1].getModel().getId());
+          }
+        },
+      },
+      handleInput: keybindHandler,
+      keys: {
+        Down27: function () {
+          Game.popMode();
+        },
       },
     },
 
     pickup: {
       items: null,
+      wants: null,
       enter: function () {
         var avatar = Game.state.entities.getAvatar();
         var items = this.items = [];
+        var wants = this.wants = {};
         Game.state.entities.spam("loot", items, avatar);
 
         this.keys = {
           Down13: function () {
             avatar.nextAction = function () {
               for (var i = 0; i < items.length; i++) {
-                if (!items[i].want) continue;
-                items[i].item.pickup(this);
+                if (!wants[i]) continue;
+                items[i].pickup(this);
                 this.delay(1);
               }
             };
@@ -270,7 +292,7 @@ Game.UIMode = (function () {
         for (var i = 1; i <= items.length; i++) {
           this.keys[i] = (function (j) {
             return function () {
-              items[j].want = !items[j].want;
+              wants[j] = !wants[j];
             };
           })(i-1);
         }
@@ -279,10 +301,9 @@ Game.UIMode = (function () {
       render: {
         main: function (d) {
           for (var i = 1; i <= this.items.length; i++) {
-            var it = this.items[i-1];
             d.drawText(3,i, ""+i);
-            d.drawText(6,i, it.want ? "+" : "-");
-            d.drawText(8,i, it.item.getModel().getId());
+            d.drawText(6,i, this.wants[i-1] ? "+" : "-");
+            d.drawText(8,i, this.items[i-1].getModel().getId());
           }
         },
       },

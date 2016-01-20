@@ -5,6 +5,7 @@ Game.Entity = (function () {
     Game.Mixin.call(this);
 
     this.attr = this.attr || {};
+    this.attr.storeKey = attr.storeKey;
     this.attr.model = attr.model || "nobody";
     this.mixins(Game.EntityModel.db[this.attr.model].mixins, attr);
   }
@@ -12,6 +13,10 @@ Game.Entity = (function () {
 
   Entity.prototype.getModel = function () {
     return Game.EntityModel.db[this.attr.model || "nobody"];
+  };
+
+  Entity.prototype.getStoreKey = function () {
+    return this.attr.storeKey;
   };
 
   Entity.prototype.getPriority = function () {
