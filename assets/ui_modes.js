@@ -14,6 +14,29 @@ Game.UIMode = (function () {
     };
   }
 
+  function manipulateInventory(f) {
+    return function () {
+      Game.pushMode("inventory");
+
+      if (Game.UIMode.inventory.items.length <= 0) {
+        Game.Message.send("You don't have any items.");
+        Game.popMode();
+        return;
+      }
+
+      Game.UIMode.inventory.exit = function () {
+        this.exit = null;
+        var got = this.selected;
+        if (got == null) {
+          Game.Message.send("Okay then.");
+        }
+        else {
+          f(got);
+        }
+      };
+    }
+  }
+
   function moveAvatar(x,y) {
     return function() {
       Game.state.entities.getAvatar().nextAction = function () {
@@ -25,7 +48,7 @@ Game.UIMode = (function () {
             break;
 
           default:
-            this.delay(1);
+            this.delay(2);
             break;
         }
       };
@@ -242,24 +265,56 @@ Game.UIMode = (function () {
 
         g: function () { Game.pushMode("pickup"); },
         i: function () { Game.pushMode("inventory"); },
+        d: manipulateInventory(function (got) {
+          Game.state.entities.getAvatar().nextAction = function () {
+            got.drop(this);
+            this.delay(2);
+          };
+        }),
+        e: manipulateInventory(function (got) {
+          Game.state.entities.getAvatar().nextAction = function () {
+            Game.Message.send("You kill the " + got.getModel().getName() + ".");
+            setTimeout(function () {
+              Game.Message.send("You realise that was a really bad idea.");
+              setTimeout(function () {
+                Game.Message.send("You die????");
+                Game.initMode("lose");
+              }, 2000);
+            }, 10000);
+          };
+        }),
       },
     },
 
     inventory: {
-      render: {
-        main: function (d) {
-          var items = Game.state.entities.getAvatar().getItems();
-          for (var i = 1; i <= items.length; i++) {
-            d.drawText(3,i, ""+i);
-            d.drawText(6,i, "-");
-            d.drawText(8,i, items[i-1].getModel().getId());
-          }
-        },
+      items: null,
+      selected: null,
+      enter: function () {
+        var items = this.items = Game.state.entities.getAvatar().getItems();
+        this.keys = {
+          Down27: function () {
+            Game.popMode();
+          },
+        };
+
+        for (var i = 1; i <= items.length; i++) {
+          this.keys[i] = (function (self, j) {
+            return function () {
+              self.selected = items[j];
+              Game.popMode();
+            };
+          })(this, i-1);
+        }
       },
       handleInput: keybindHandler,
-      keys: {
-        Down27: function () {
-          Game.popMode();
+      render: {
+        main: function (d) {
+          this.selected = null;
+          for (var i = 1; i <= this.items.length; i++) {
+            d.drawText(3,i, ""+i);
+            d.drawText(6,i, "-");
+            d.drawText(8,i, this.items[i-1].getModel().getName());
+          }
         },
       },
     },
@@ -303,7 +358,7 @@ Game.UIMode = (function () {
           for (var i = 1; i <= this.items.length; i++) {
             d.drawText(3,i, ""+i);
             d.drawText(6,i, this.wants[i-1] ? "+" : "-");
-            d.drawText(8,i, this.items[i-1].getModel().getId());
+            d.drawText(8,i, this.items[i-1].getModel().getName());
           }
         },
       },

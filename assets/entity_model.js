@@ -6,12 +6,16 @@ Game.EntityModel = (function () {
   function Model(attr) {
     Game.Symbol.call(this, attr);
     this.id = attr.id;
+    this.name = attr.name;
     this.mixins = attr.mixins || [];
   }
   Model.extend(Game.Symbol);
 
   Model.prototype.getId = function () {
     return this.id;
+  };
+  Model.prototype.getName = function () {
+    return this.name || this.id;
   };
 
   Model.db = {};
@@ -57,6 +61,7 @@ Game.EntityModel = (function () {
 
   Model.register(new Model({
     id: "candy",
+    name: "poisoned candy",
     chr: '!',
     fg: "red",
     mixins: [
