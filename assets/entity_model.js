@@ -45,7 +45,22 @@ Game.EntityModel = (function () {
   }));
 
   Model.register(new Model({
-    id: "moss",
+    id: "bee",
+    chr: '6',
+    fg: "yellow",
+    mixins: [
+      Mx.Duration,
+      Mx.Mortal,
+      Mx.Position,
+      Mx.Solid,
+      Mx.TouchToKill,
+      Mx.UpGoerFive,
+      Mx.Walker,
+    ]
+  }));
+
+  Model.register(new Model({
+    id: "moth",
     chr: '%',
     fg: "green",
     mixins: [

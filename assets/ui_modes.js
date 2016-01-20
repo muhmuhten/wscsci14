@@ -139,9 +139,15 @@ Game.UIMode = (function () {
           Position: chooseRoomTile(rooms[0]),
         }));
 
-        for (var i = 10; i--;) {
+        for (var i = 4; i--;) {
           Game.state.entities.add(new Game.Entity({
-            model: "moss",
+            model: "moth",
+            Position: Game.state.map.chooseWalkableTile(),
+          }));
+        }
+        for (var i = 6; i--;) {
+          Game.state.entities.add(new Game.Entity({
+            model: "bee",
             Position: Game.state.map.chooseWalkableTile(),
           }));
         }
@@ -221,7 +227,10 @@ Game.UIMode = (function () {
           row++;
           d.drawText(1,row++, "Controls:");
           d.drawText(1,row++, "[<] win, if on <");
-          d.drawText(1,row++, "[S] Back to menu");
+          d.drawText(1,row++, "[=] return to menu");
+          d.drawText(1,row++, "[g] pick up items");
+          d.drawText(1,row++, "[d] drop an item");
+          d.drawText(1,row++, "[e] eat an item");
           row++;
           d.drawText(1,row++, "Directions:");
           row++;
