@@ -12,7 +12,7 @@ Game.EntityMixin.Mortal = (function () {
         Game.Message.send("You kill the " + this.getModel().getName() + ".");
       }
       else {
-        Game.Message.send("The " + this.getModel().getName() + " dies.");
+        Game.Message.send("The " + killer.getModel().getName() + " kills the " + this.getModel().getName() + " dies.");
       }
     },
   };

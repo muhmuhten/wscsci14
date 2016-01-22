@@ -93,11 +93,11 @@ Game.UIMode = (function () {
       render: {
         main: function (d) {
           d.drawText(1,1, "Press:");
-          d.drawText(3,3, "[N] Start a new game");
+          d.drawText(3,3, "[n] Start a new game");
 
           if (checkLocalStorage()) {
-            d.drawText(3,4, "[L] Load the saved game");
-            d.drawText(3,5, "[S] Save the current game");
+            d.drawText(3,4, "[l] Load the saved game");
+            d.drawText(3,5, "[s] Save the current game");
           }
         },
       },
@@ -282,13 +282,11 @@ Game.UIMode = (function () {
         }),
         e: manipulateInventory(function (got) {
           Game.state.entities.getAvatar().nextAction = function () {
-            Game.Message.send("You kill the " + got.getModel().getName() + ".");
+            Game.Message.send("You eat the " + got.getModel().getName() + ".");
+            Game.Message.send("You realise that was a really bad idea.");
             setTimeout(function () {
-              Game.Message.send("You realise that was a really bad idea.");
-              setTimeout(function () {
-                Game.Message.send("You die????");
-                Game.initMode("lose");
-              }, 2000);
+              Game.Message.send("You die????");
+              Game.initMode("lose");
             }, 10000);
           };
         }),
