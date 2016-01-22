@@ -11,7 +11,8 @@ Game.EntityMixin.Avatar = (function () {
       }
     },
 
-    kill: function () {
+    kill: function (killer) {
+      Game.Message.send("The " + killer.getModel().getName() + " kills you!");
       Game.Message.send("You die...");
       Game.initMode("lose");
     },
